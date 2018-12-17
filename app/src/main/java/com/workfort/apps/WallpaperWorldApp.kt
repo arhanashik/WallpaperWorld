@@ -26,7 +26,7 @@ class WallpaperWorldApp  : MultiDexApplication() {
     companion object {
         private lateinit var sInstance: WallpaperWorldApp
 
-        fun getBaseApplicationContext(): Context {
+        fun getApplicationContext(): Context {
             return sInstance.applicationContext
         }
     }

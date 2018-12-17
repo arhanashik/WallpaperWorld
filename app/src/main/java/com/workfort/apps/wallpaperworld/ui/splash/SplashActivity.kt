@@ -1,13 +1,17 @@
-package com.workfort.apps.wallpaperworld
+package com.workfort.apps.wallpaperworld.ui.splash
 
 import android.animation.Animator
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
+import android.content.Intent
+import android.os.SystemClock
 import android.view.View
 import androidx.databinding.DataBindingUtil
+import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.databinding.ActivitySplashBinding
+import com.workfort.apps.wallpaperworld.ui.main.MainActivity
 
 
 class SplashActivity : AppCompatActivity() {
@@ -29,7 +33,11 @@ class SplashActivity : AppCompatActivity() {
         mSetLeftIn = AnimatorInflater.loadAnimator(this, R.animator.flip_in) as AnimatorSet
         mSetLeftIn.addListener(object : Animator.AnimatorListener {
             override fun onAnimationRepeat(animation: Animator) {}
-            override fun onAnimationEnd(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {
+                SystemClock.sleep(1000)
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                finish()
+            }
             override fun onAnimationCancel(animation: Animator) {}
             override fun onAnimationStart(animation: Animator) {
                 mBinding.overflow.visibility = View.VISIBLE

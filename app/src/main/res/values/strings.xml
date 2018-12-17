@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">WallpaperWorld</string>
+
+    <string name="title_activity_main">Wallpaper World</string>
+    <string name="title_fragment_wallpapers">All</string>
+    <string name="title_fragment_favourite">Favourite</string>
+
     <string name="description_app_logo">App logo</string>
 </resources>
