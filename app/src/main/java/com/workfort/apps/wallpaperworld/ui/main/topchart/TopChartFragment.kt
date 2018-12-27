@@ -1,4 +1,4 @@
-package com.workfort.apps.wallpaperworld.ui.main.wallpapers
+package com.workfort.apps.wallpaperworld.ui.main.topchart
 
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -8,25 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import com.workfort.apps.wallpaperworld.R
 
-class WallpapersFragment : Fragment() {
+class TopChartFragment : Fragment() {
 
     companion object {
-        fun newInstance() = WallpapersFragment()
+        fun newInstance() = TopChartFragment()
     }
 
-    private lateinit var viewModel: WallpapersViewModel
+    private lateinit var viewModel: TopChartViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_wallpapers, container, false)
+        return inflater.inflate(R.layout.fragment_top_chart, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(WallpapersViewModel::class.java)
-
+        viewModel = ViewModelProviders.of(this).get(TopChartViewModel::class.java)
     }
 
 }

@@ -4,17 +4,17 @@
           package="com.workfort.apps.wallpaperworld">
 
     <application
-        android:name="com.workfort.apps.WallpaperWorldApp"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:ignore="GoogleAppIndexingWarning">
+            android:name="com.workfort.apps.WallpaperWorldApp"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher"
+            android:supportsRtl="true"
+            android:theme="@style/AppTheme"
+            tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.splash.SplashActivity"
-            android:theme="@style/AppTheme.Splash">
+                android:name=".ui.splash.SplashActivity"
+                android:theme="@style/AppTheme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -22,10 +22,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.main.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar">
+                android:name=".ui.main.MainActivity"
+                android:label="@string/title_activity_main"
+                android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+                android:name=".ui.searchresult.SearchResultActivity"
+                android:label="@string/title_activity_search_result"
+                android:launchMode="singleTop"
+                android:theme="@style/AppTheme.NoActionBar">
+
+            <meta-data android:name="android.app.searchable"
+                       android:resource="@xml/searchable" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".ui.searchresult.SearchResultActivity" />
     </application>
 
 </manifest>
