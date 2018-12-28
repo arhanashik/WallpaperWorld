@@ -4,19 +4,20 @@ import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.workfort.apps.wallpaperworld.R
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.activity_search_result.*
+import kotlinx.android.synthetic.main.appbar.view.*
 
 class SearchResultActivity : AppCompatActivity() {
 
     private var searchView: SearchView? = null
-    private var searchQuery = "jj"
+    private var searchQuery = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +26,12 @@ class SearchResultActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         handleIntent(intent)
+
+        swipe_refresh.setOnRefreshListener{
+            Handler().postDelayed({
+                swipe_refresh.isRefreshing = false
+            }, 5000)
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
