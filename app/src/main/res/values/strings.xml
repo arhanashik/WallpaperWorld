@@ -119,7 +119,11 @@
     <string name="title_activity_search_result">Search Wallpaper</string>
     <string name="label_collection">Collection</string>
     <string name="label_top_chart">Top Chart</string>
+    <string name="label_popular">Popular</string>
     <string name="label_favourite">Favourite</string>
     <string name="description_ic_no_favourite">Icon no favourite</string>
     <string name="description_image_wallpaper">Image wallpaper</string>
+    <string name="description_ic_no_popular">Icon popular</string>
+    <string name="description_ic_premium">Icon premium</string>
+    <string name="label_premium">Premium</string>
 </resources>
