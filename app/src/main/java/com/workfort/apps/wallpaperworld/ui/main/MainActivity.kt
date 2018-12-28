@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         pagerAdapter.addItem(getString(R.string.label_favourite), FavouriteFragment.newInstance())
 
         view_pager.adapter = pagerAdapter
+        view_pager.offscreenPageLimit = pagerAdapter.count
         tab_layout.setupWithViewPager(view_pager)
         fragmentStack.push(0)
 
