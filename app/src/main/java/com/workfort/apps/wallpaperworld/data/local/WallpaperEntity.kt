@@ -17,6 +17,8 @@ import android.os.Parcelable
 data class WallpaperEntity (val id: Int,
                             val title: String?,
                             val url: String?,
+                            val width: Int,
+                            val height: Int,
                             val totalWow: Int,
                             val uploaderId: String?,
                             val uploaderName: String?): Parcelable {
@@ -26,6 +28,8 @@ data class WallpaperEntity (val id: Int,
         parcel.readString(),
         parcel.readString(),
         parcel.readInt(),
+        parcel.readInt(),
+        parcel.readInt(),
         parcel.readString(),
         parcel.readString()
     )
@@ -34,6 +38,8 @@ data class WallpaperEntity (val id: Int,
         parcel.writeInt(id)
         parcel.writeString(title)
         parcel.writeString(url)
+        parcel.writeInt(width)
+        parcel.writeInt(height)
         parcel.writeInt(totalWow)
         parcel.writeString(uploaderId)
         parcel.writeString(uploaderName)

@@ -47,32 +47,33 @@ class CollectionFragment : Fragment() {
         swipe_refresh.setOnRefreshListener {
             Handler().postDelayed({
                 swipe_refresh.isRefreshing = false
-            }, 5000)
+                wallpaperStaggeredAdapter.setWallpaperList(generateDummyData())
+            }, 1000)
         }
     }
 
     private fun generateDummyData(): List<WallpaperEntity> {
         val listOfWallpapers = mutableListOf<WallpaperEntity>()
 
-        var movieModel = WallpaperEntity(1, "Avengers", "", 234, "", "arhan.ashik")
+        var movieModel = WallpaperEntity(1, "Avengers", "", 180, 220, 223, "", "arhan.ashik")
         listOfWallpapers.add(movieModel)
 
-        movieModel = WallpaperEntity(2, "Avengers: Age of Ultron", "", 234, "", "arhan.ashik")
+        movieModel = WallpaperEntity(2, "Avengers: Age of Ultron", "", 180, 220, 223, "", "arhan.ashik")
         listOfWallpapers.add(movieModel)
 
-        movieModel = WallpaperEntity(3, "Iron Man 3", "", 234, "", "arhan.ashik")
+        movieModel = WallpaperEntity(3, "Iron Man 3", "", 180, 220, 223, "", "arhan.ashik")
         listOfWallpapers.add(movieModel)
 
-        movieModel = WallpaperEntity(4, "Avengers: Infinity War", "", 234, "", "arhan.ashik")
+        movieModel = WallpaperEntity(4, "Avengers: Infinity War", "", 180, 220, 223, "", "arhan.ashik")
         listOfWallpapers.add(movieModel)
 
-        movieModel = WallpaperEntity(5, "Thor: Ragnarok", "", 234, "", "arhan.ashik")
+        movieModel = WallpaperEntity(5, "Thor: Ragnarok", "", 180, 220, 223, "", "arhan.ashik")
         listOfWallpapers.add(movieModel)
 
-        movieModel = WallpaperEntity(6, "lack Panther", "", 234, "", "arhan.ashik")
+        movieModel = WallpaperEntity(6, "lack Panther", "", 180, 220, 223, "", "arhan.ashik")
         listOfWallpapers.add(movieModel)
 
-        movieModel = WallpaperEntity(7, "Logan", "", 234, "", "arhan.ashik")
+        movieModel = WallpaperEntity(7, "Logan", "", 180, 220, 223, "", "arhan.ashik")
         listOfWallpapers.add(movieModel)
 
         return listOfWallpapers

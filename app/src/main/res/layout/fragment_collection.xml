@@ -34,6 +34,9 @@
                     android:id="@+id/rv_wallpapers"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
                     android:visibility="visible" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
