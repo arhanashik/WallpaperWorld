@@ -28,6 +28,18 @@ import com.workfort.apps.wallpaperworld.R
 
 class ImageLoader {
     companion object {
+        fun load(location: Int, imageView: ImageView) {
+            val requestOptions = RequestOptions()
+                .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                .placeholder(R.drawable.ic_logo)
+                .error(R.drawable.ic_search_broken_link)
+
+            Glide.with(imageView.context)
+                .load(if (location > 0) location else R.drawable.ic_search_broken_link)
+                .apply(requestOptions)
+                .into(imageView)
+        }
+
         fun load(location: String, imageView: ImageView) {
             val requestOptions = RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)

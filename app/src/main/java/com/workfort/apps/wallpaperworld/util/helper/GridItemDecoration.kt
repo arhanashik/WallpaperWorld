@@ -1,4 +1,4 @@
-package com.workfort.apps.wallpaperworld.ui.main.adapter
+package com.workfort.apps.wallpaperworld.util.helper
 
 /*
 *  ****************************************************************************

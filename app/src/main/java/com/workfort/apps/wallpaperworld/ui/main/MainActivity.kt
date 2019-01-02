@@ -14,7 +14,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayout
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.databinding.CustomTabBinding
-import com.workfort.apps.wallpaperworld.ui.main.adapter.PagerAdapter
+import com.workfort.apps.wallpaperworld.ui.adapter.PagerAdapter
 import com.workfort.apps.wallpaperworld.ui.main.collection.CollectionFragment
 import com.workfort.apps.wallpaperworld.ui.main.favourite.FavouriteFragment
 import com.workfort.apps.wallpaperworld.ui.main.popular.PopularFragment

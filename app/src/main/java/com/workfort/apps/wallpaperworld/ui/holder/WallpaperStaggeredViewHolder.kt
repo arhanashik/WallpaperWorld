@@ -1,9 +1,12 @@
 package com.workfort.apps.wallpaperworld.ui.holder
 
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.recyclerview.widget.RecyclerView
+import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.data.local.WallpaperEntity
 import com.workfort.apps.wallpaperworld.databinding.ItemStaggeredWallpaperBinding
-import java.util.*
+import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
+import com.workfort.apps.wallpaperworld.util.helper.load
 
 /*
 *  ****************************************************************************
@@ -17,18 +20,26 @@ import java.util.*
 */
 
 class WallpaperStaggeredViewHolder(val binding: ItemStaggeredWallpaperBinding): RecyclerView.ViewHolder(binding.root) {
-    private val mRandom = Random()
 
-    fun bindView(wallpaperEntity: WallpaperEntity) {
-        binding.tvTitle.text = wallpaperEntity.title
-        val uploadedBy = "by " + wallpaperEntity.uploaderName
+    fun bindView(wallpaper: WallpaperEntity, listener: WallpaperClickEvent?) {
+        binding.tvTitle.text = wallpaper.title
+        val uploadedBy = "by " + wallpaper.uploaderName
         binding.tvUploadedBy.text = uploadedBy
-        binding.tvWowCount.text = wallpaperEntity.totalWow.toString()
+        binding.tvWowCount.text = wallpaper.totalWow.toString()
 
-        binding.root.layoutParams.height = getRandomIntInRange(250, 150)
-    }
+        val set = ConstraintSet()
+        val ratio = String.format("%d:%d", wallpaper.width, wallpaper.height)
+        set.clone(binding.container)
+        set.setDimensionRatio(binding.imgWallpaper.id, ratio)
+        set.applyTo(binding.container)
 
-    private fun getRandomIntInRange(max: Int, min: Int): Int {
-        return mRandom.nextInt(max - min + min) + min
+        binding.imgWallpaper.setOnClickListener {
+            listener?.onClickWallpaper(wallpaper, adapterPosition)
+        }
+
+        var imgRes = R.drawable.img_splash2
+        if(adapterPosition%2 == 0) imgRes = R.drawable.img_splash
+
+        binding.imgWallpaper.load(imgRes)
     }
 }
