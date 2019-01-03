@@ -9,4 +9,7 @@
     <dimen name="txt_tab_label">14sp</dimen>
     <dimen name="txt_wallpaper_title">14sp</dimen>
     <dimen name="txt_wallpaper_subtitle">12sp</dimen>
+
+    <dimen name="txt_12">12sp</dimen>
+    <dimen name="txt_14">14sp</dimen>
 </resources>

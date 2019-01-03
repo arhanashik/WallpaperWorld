@@ -126,4 +126,6 @@
     <string name="description_ic_no_popular">Icon popular</string>
     <string name="description_ic_premium">Icon premium</string>
     <string name="label_premium">Premium</string>
+    <string name="description_ic_option">Ic option</string>
+    <string name="label_set">Set</string>
 </resources>

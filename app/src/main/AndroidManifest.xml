@@ -39,6 +39,10 @@
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
+        <activity
+                android:name=".ui.imageviewer.ImageViewerActivity"
+                android:launchMode="singleTop"
+                android:theme="@style/AppTheme.NoActionBar"/>
 
         <meta-data
                 android:name="android.app.default_searchable"

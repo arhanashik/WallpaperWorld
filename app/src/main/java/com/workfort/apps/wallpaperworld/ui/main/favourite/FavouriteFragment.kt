@@ -11,10 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.data.DummyData
-import com.workfort.apps.wallpaperworld.data.local.WallpaperEntity
+import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperStaggeredAdapter
 import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
-import com.workfort.apps.wallpaperworld.util.helper.StaggeredGridItemDecoration
+import com.workfort.apps.util.helper.StaggeredGridItemDecoration
 import kotlinx.android.synthetic.main.fragment_favourite.*
 
 class FavouriteFragment : Fragment() {

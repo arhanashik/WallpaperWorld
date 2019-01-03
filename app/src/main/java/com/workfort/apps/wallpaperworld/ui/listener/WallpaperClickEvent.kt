@@ -1,6 +1,6 @@
 package com.workfort.apps.wallpaperworld.ui.listener
 
-import com.workfort.apps.wallpaperworld.data.local.WallpaperEntity
+import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 
 /*
 *  ****************************************************************************

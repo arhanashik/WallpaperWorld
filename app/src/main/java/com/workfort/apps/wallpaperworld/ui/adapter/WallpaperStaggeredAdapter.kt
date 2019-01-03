@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.workfort.apps.wallpaperworld.R
-import com.workfort.apps.wallpaperworld.data.local.WallpaperEntity
+import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 import com.workfort.apps.wallpaperworld.databinding.ItemStaggeredWallpaperBinding
 import com.workfort.apps.wallpaperworld.ui.holder.WallpaperStaggeredViewHolder
 import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent

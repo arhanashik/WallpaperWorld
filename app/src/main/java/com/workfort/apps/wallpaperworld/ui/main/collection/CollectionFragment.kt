@@ -1,19 +1,20 @@
 package com.workfort.apps.wallpaperworld.ui.main.collection
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.workfort.apps.util.helper.StaggeredGridItemDecoration
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.data.DummyData
-import com.workfort.apps.wallpaperworld.data.local.WallpaperEntity
-import com.workfort.apps.wallpaperworld.util.helper.StaggeredGridItemDecoration
+import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperStaggeredAdapter
+import com.workfort.apps.wallpaperworld.ui.imageviewer.ImageViewerActivity
 import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
 import kotlinx.android.synthetic.main.fragment_collection.*
 
@@ -46,7 +47,7 @@ class CollectionFragment : Fragment() {
         val wallpaperStaggeredAdapter = WallpaperStaggeredAdapter()
         wallpaperStaggeredAdapter.setListener(object: WallpaperClickEvent{
             override fun onClickWallpaper(wallpaper: WallpaperEntity, position: Int) {
-                Toast.makeText(context, "${wallpaper.title} : $position", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(context, ImageViewerActivity::class.java))
             }
         })
         rv_wallpapers.adapter = wallpaperStaggeredAdapter

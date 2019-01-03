@@ -2,6 +2,8 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
+apply plugin: 'kotlin-kapt'
+
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -34,7 +36,6 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-
     implementation "androidx.appcompat:appcompat:$rootProject.appcompat"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraint"
     // reading and writing Exif tags in a JPEG file or a RAW image file
@@ -45,14 +46,16 @@ dependencies {
     implementation "com.google.android.material:material:$rootProject.material"
     // LiveData + ViewModel
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycle"
-
     implementation "androidx.cardview:cardview:$rootProject.support"
     implementation "androidx.recyclerview:recyclerview:$rootProject.support"
-
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
     implementation "androidx.multidex:multidex:$rootProject.multidex"
+}
+
+//module
+dependencies {
+    implementation project(':cardstackview')
 }
 
 //3rd party
