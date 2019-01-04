@@ -44,7 +44,7 @@ ext{
     support = '1.0.0'
     lifecycle = '2.0.0'
     navigation = '1.0.0-alpha07'
-    multidex = '2.0.0'
+    multidex = '2.0.1'
 
     junit = '4.12'
     runner = '1.1.0-alpha3'

@@ -42,7 +42,7 @@
         <activity
                 android:name=".ui.imageviewer.ImageViewerActivity"
                 android:launchMode="singleTop"
-                android:theme="@style/AppTheme.NoActionBar"/>
+                android:theme="@style/AppTheme.ImageViewer"/>
 
         <meta-data
                 android:name="android.app.default_searchable"

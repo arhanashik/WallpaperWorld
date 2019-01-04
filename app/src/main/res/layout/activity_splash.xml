@@ -13,7 +13,7 @@
             android:id="@+id/overflow"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@drawable/splash_bg_gradient"
+            android:background="@drawable/bg_gradient_splash"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"

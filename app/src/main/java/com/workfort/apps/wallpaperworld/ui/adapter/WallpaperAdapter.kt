@@ -30,6 +30,10 @@ class WallpaperAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun getWallpaper(position: Int): WallpaperEntity {
+        return listOfWallpapers[position]
+    }
+
     fun getWallpaperList(): List<WallpaperEntity> {
         return listOfWallpapers
     }

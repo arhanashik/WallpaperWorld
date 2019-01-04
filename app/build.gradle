@@ -44,12 +44,20 @@ dependencies {
     implementation "androidx.legacy:legacy-support-v4:$rootProject.support"
     //instead of support design
     implementation "com.google.android.material:material:$rootProject.material"
+
     // LiveData + ViewModel
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycle"
+
     implementation "androidx.cardview:cardview:$rootProject.support"
     implementation "androidx.recyclerview:recyclerview:$rootProject.support"
+
+    //palette
+    implementation "androidx.palette:palette:$rootProject.support"
+
     //kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //multi-dex
     implementation "androidx.multidex:multidex:$rootProject.multidex"
 }
 

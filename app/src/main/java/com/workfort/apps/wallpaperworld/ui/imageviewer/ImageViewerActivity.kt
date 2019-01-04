@@ -1,10 +1,14 @@
 package com.workfort.apps.wallpaperworld.ui.imageviewer
 
+import android.graphics.*
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import com.workfort.apps.wallpaperworld.R
@@ -18,6 +22,7 @@ import com.yuyakaido.android.cardstackview.CardStackListener
 import com.yuyakaido.android.cardstackview.Direction
 import com.yuyakaido.android.cardstackview.StackFrom
 import kotlinx.android.synthetic.main.activity_image_viewer.*
+
 
 class ImageViewerActivity: AppCompatActivity(), CardStackListener {
 
@@ -67,6 +72,23 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
         if (manager.topPosition == adapter!!.itemCount - 5) {
             paginate()
         }
+
+        var imgRes = R.drawable.img_splash2
+        if(manager.topPosition%2==0) {
+            imgRes = R.drawable.img_splash
+        }
+        if(manager.topPosition == 3 || manager.topPosition == 8 || manager.topPosition == 10)
+            imgRes = R.drawable.img_splash3
+
+        img_overflow.setImageBitmap(BitmapFactory.decodeResource(resources, imgRes))
+//        Palette.from(imgBitmap).generate {
+//            val defaultColor1 = ContextCompat.getColor(this, R.color.colorPrimary)
+//            val defaultColor2 = ContextCompat.getColor(this, R.color.colorPrimaryDark)
+//
+//            container.background = getBackgroundGradient(
+//                it!!.getDarkVibrantColor(defaultColor2), it.getDarkMutedColor(defaultColor1)
+//            )
+//        }
     }
 
     override fun onCardRewound() {
