@@ -1,12 +1,15 @@
 package com.workfort.apps.wallpaperworld.ui.holder
 
+import android.graphics.BitmapFactory
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.RecyclerView
 import com.workfort.apps.util.helper.load
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 import com.workfort.apps.wallpaperworld.databinding.ItemStaggeredWallpaperBinding
 import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
+
 
 /*
 *  ****************************************************************************

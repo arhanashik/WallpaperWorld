@@ -81,14 +81,6 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
             imgRes = R.drawable.img_splash3
 
         img_overflow.setImageBitmap(BitmapFactory.decodeResource(resources, imgRes))
-//        Palette.from(imgBitmap).generate {
-//            val defaultColor1 = ContextCompat.getColor(this, R.color.colorPrimary)
-//            val defaultColor2 = ContextCompat.getColor(this, R.color.colorPrimaryDark)
-//
-//            container.background = getBackgroundGradient(
-//                it!!.getDarkVibrantColor(defaultColor2), it.getDarkMutedColor(defaultColor1)
-//            )
-//        }
     }
 
     override fun onCardRewound() {
