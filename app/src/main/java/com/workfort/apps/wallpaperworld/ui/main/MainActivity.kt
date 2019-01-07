@@ -13,7 +13,6 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayout
-import com.w3engineers.jitpackbottomnav.util.onUiThread
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.databinding.CustomTabBinding
 import com.workfort.apps.wallpaperworld.ui.adapter.PagerAdapter

@@ -1,14 +1,11 @@
 package com.workfort.apps.wallpaperworld.ui.imageviewer
 
 import android.graphics.*
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
 import com.workfort.apps.wallpaperworld.R
@@ -17,17 +14,20 @@ import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperAdapter
 import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperDiffCallback
 import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
-import com.yuyakaido.android.cardstackview.CardStackLayoutManager
-import com.yuyakaido.android.cardstackview.CardStackListener
-import com.yuyakaido.android.cardstackview.Direction
-import com.yuyakaido.android.cardstackview.StackFrom
+import com.yuyakaido.android.cardstackview.*
 import kotlinx.android.synthetic.main.activity_image_viewer.*
+import org.json.JSONObject
+import timber.log.Timber
+import java.util.*
 
 
 class ImageViewerActivity: AppCompatActivity(), CardStackListener {
 
     private var adapter: WallpaperAdapter? = null
     private val manager by lazy { CardStackLayoutManager(this, this) }
+
+    private var visibleItemCount = 4
+    private var lastSwipeDirection: Stack<Direction> = Stack()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
 
     private fun initializeCardStackView() {
         manager.setStackFrom(StackFrom.Top)
-        manager.setVisibleCount(4)
+        manager.setVisibleCount(visibleItemCount)
         manager.setTranslationInterval(8.0f)
         manager.setScaleInterval(0.95f)
         manager.setSwipeThreshold(0.3f)
@@ -64,13 +64,14 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
     }
 
     override fun onCardDragging(direction: Direction, ratio: Float) {
-        Log.d("CardStackView", "onCardDragging: d = ${direction.name}, r = $ratio")
+        Timber.d("CardStackView:: onCardDragging: d = ${direction.name}, r = $ratio")
     }
 
     override fun onCardSwiped(direction: Direction) {
-        Log.d("CardStackView", "onCardSwiped: p = ${manager.topPosition}, d = $direction")
+        Timber.d("CardStackView:: onCardSwiped: p = ${manager.topPosition}, d = $direction")
+        lastSwipeDirection.push(direction)
         if (manager.topPosition == adapter!!.itemCount - 5) {
-            paginate()
+            //paginate()
         }
 
         var imgRes = R.drawable.img_splash2
@@ -80,25 +81,50 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
         if(manager.topPosition == 3 || manager.topPosition == 8 || manager.topPosition == 10)
             imgRes = R.drawable.img_splash3
 
+        val lastPosition = adapter!!.itemCount - 1
+        Timber.d("CardStackView:: onCardSwiped: lastPosition = $lastPosition")
+
+        when(manager.topPosition) {
+            lastPosition - visibleItemCount -> {
+                if(visibleItemCount > 1) {
+                    visibleItemCount--
+                    manager.setVisibleCount(visibleItemCount)
+                }
+            }
+            lastPosition -> {
+                manager.setCanScrollHorizontal(false)
+                manager.setCanScrollVertical(false)
+            }
+        }
+
         img_overflow.setImageBitmap(BitmapFactory.decodeResource(resources, imgRes))
     }
 
     override fun onCardRewound() {
-        Log.d("CardStackView", "onCardRewound: ${manager.topPosition}")
+        Timber.d("CardStackView:: onCardRewound: ${manager.topPosition}")
+        val lastPosition = adapter!!.itemCount - 1
+        when(manager.topPosition) {
+            lastPosition - visibleItemCount -> {
+                if(visibleItemCount < 4) {
+                    visibleItemCount++
+                    manager.setVisibleCount(visibleItemCount)
+                }
+            }
+        }
     }
 
     override fun onCardCanceled() {
-        Log.d("CardStackView", "onCardCanceled: ${manager.topPosition}")
+        Timber.d("CardStackView:: onCardCanceled: ${manager.topPosition}")
     }
 
     override fun onCardAppeared(view: View, position: Int) {
         val textView = view.findViewById<TextView>(R.id.tv_title)
-        Log.d("CardStackView", "onCardAppeared: ($position) ${textView.text}")
+        Timber.d("CardStackView:: onCardAppeared: ($position) ${textView.text}")
     }
 
     override fun onCardDisappeared(view: View, position: Int) {
         val textView = view.findViewById<TextView>(R.id.tv_title)
-        Log.d("CardStackView", "onCardDisappeared: ($position) ${textView.text}")
+        Timber.d("CardStackView:: onCardDisappeared: ($position) ${textView.text}")
     }
 
     private fun paginate() {
@@ -108,5 +134,23 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
         val result = DiffUtil.calculateDiff(callback)
         adapter!!.setWallpaperList(new)
         result.dispatchUpdatesTo(adapter!!)
+    }
+
+    override fun onBackPressed() {
+        if(lastSwipeDirection.empty()) {
+            super.onBackPressed()
+        }else {
+            if(lastSwipeDirection.size == adapter!!.itemCount - 1) {
+                manager.setCanScrollHorizontal(true)
+                manager.setCanScrollVertical(true)
+            }
+            val setting = RewindAnimationSetting.Builder()
+                .setDirection(lastSwipeDirection.pop())
+                .setDuration(200)
+                .setInterpolator(DecelerateInterpolator())
+                .build()
+            manager.setRewindAnimationSetting(setting)
+            card_stack_view.rewind()
+        }
     }
 }
