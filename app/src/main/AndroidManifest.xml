@@ -3,6 +3,10 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.workfort.apps.wallpaperworld">
 
+    <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
             android:name="com.workfort.apps.WallpaperWorldApp"
             android:allowBackup="true"
@@ -43,6 +47,11 @@
                 android:name=".ui.imageviewer.ImageViewerActivity"
                 android:launchMode="singleTop"
                 android:theme="@style/AppTheme.ImageViewer"/>
+
+        <activity
+                android:name="com.yalantis.ucrop.UCropActivity"
+                android:screenOrientation="portrait"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
         <meta-data
                 android:name="android.app.default_searchable"

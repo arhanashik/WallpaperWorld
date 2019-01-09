@@ -1,13 +1,20 @@
 package com.workfort.apps.wallpaperworld.ui.imageviewer
 
+import android.content.Intent
 import android.graphics.*
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.data.DummyData
 import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
@@ -16,9 +23,16 @@ import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperDiffCallback
 import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
 import com.yuyakaido.android.cardstackview.*
 import kotlinx.android.synthetic.main.activity_image_viewer.*
-import org.json.JSONObject
 import timber.log.Timber
 import java.util.*
+import androidx.core.content.ContextCompat
+import com.bumptech.glide.request.Request
+import com.bumptech.glide.request.target.SizeReadyCallback
+import com.bumptech.glide.request.target.Target
+import com.workfort.apps.util.helper.*
+import com.yalantis.ucrop.UCrop
+import com.yalantis.ucrop.model.AspectRatio
+import java.io.*
 
 
 class ImageViewerActivity: AppCompatActivity(), CardStackListener {
@@ -42,6 +56,27 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
         })
 
         initializeCardStackView()
+
+        btn_set.setOnClickListener {
+//            val wallpaper = BitmapFactory.decodeResource(resources, R.drawable.img_splash2)
+//
+//            val displayParams = AndroidUtil().getDisplayParams(this)
+//            Timber.e("width: %s, height: %s", displayParams.width, displayParams.height)
+//
+//            val target = object : SimpleTarget<Bitmap>(displayParams.width, displayParams.height) {
+//                override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+//                    WallpaperUtil(this@ImageViewerActivity).setWallpaper(bitmap)
+//                    Timber.e("width: %s, height: %s", bitmap.width, bitmap.height)
+//                }
+//            }
+//
+//            Glide.with(this)
+//                .asBitmap()
+//                .load(R.drawable.img_splash3)
+//                .into(target)
+
+            openCropOption(R.drawable.img_splash)
+        }
     }
 
     private fun initializeCardStackView() {
@@ -51,7 +86,7 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
         manager.setScaleInterval(0.95f)
         manager.setSwipeThreshold(0.3f)
         manager.setMaxDegree(20.0f)
-        manager.setDirections(Direction.HORIZONTAL)
+        manager.setDirections(Direction.FREEDOM)
         manager.setCanScrollHorizontal(true)
         manager.setCanScrollVertical(true)
         card_stack_view.layoutManager = manager
@@ -151,6 +186,48 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
                 .build()
             manager.setRewindAnimationSetting(setting)
             card_stack_view.rewind()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            val resultUri = UCrop.getOutput(data!!)
+            Timber.e("uri: %s", resultUri.toString())
+
+            val displayParams = AndroidUtil().getDisplayParams(this)
+
+            val target = object : SimpleTarget<Bitmap>(displayParams.width, displayParams.height) {
+                override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                    WallpaperUtil(this@ImageViewerActivity).setWallpaper(bitmap)
+                    Timber.e("width: %s, height: %s", bitmap.width, bitmap.height)
+                }
+            }
+
+//            val target = object : GliderTarget(){
+//                override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+//                    WallpaperUtil(this@ImageViewerActivity).setWallpaper(bitmap)
+//                    Timber.e("width: %s, height: %s", bitmap.width, bitmap.height)
+//                }
+//            }
+
+            Glide.with(this)
+                .asBitmap()
+                .load(resultUri)
+                .into(target)
+
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            Timber.e(UCrop.getError(data!!))
+        }
+    }
+
+    private fun openCropOption(resource: Int) {
+        try {
+            val uri = FileUtil().saveBitmap(BitmapFactory.decodeResource(resources, resource))
+            ImageUtil().cropImage(this, uri)
+        } catch (ex: Exception) {
+            ex.printStackTrace()
         }
     }
 }
