@@ -7,12 +7,12 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Menu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayout
+import com.workfort.apps.util.lib.remote.ApiService
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.databinding.CustomTabBinding
 import com.workfort.apps.wallpaperworld.ui.adapter.PagerAdapter
@@ -21,12 +21,17 @@ import com.workfort.apps.wallpaperworld.ui.main.favourite.FavouriteFragment
 import com.workfort.apps.wallpaperworld.ui.main.popular.PopularFragment
 import com.workfort.apps.wallpaperworld.ui.main.premium.PremiumFragment
 import com.workfort.apps.wallpaperworld.ui.main.topchart.TopChartFragment
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
-    private var fragmentStack: Stack<Int> = Stack()
+    var disposable: CompositeDisposable = CompositeDisposable()
+    val apiService by lazy {
+        ApiService.create()
+    }
+
+    //private var fragmentStack: Stack<Int> = Stack()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         view_pager.adapter = pagerAdapter
         view_pager.offscreenPageLimit = pagerAdapter.count
         tab_layout.setupWithViewPager(view_pager)
-        fragmentStack.push(0)
+        //fragmentStack.push(0)
 
         setupTabs()
     }
@@ -89,12 +94,12 @@ class MainActivity : AppCompatActivity() {
                     setTabSelection(true, tabPosition!!, view)
                 }
 
-                if (fragmentStack.contains(tabPosition)) {
-                    fragmentStack.remove(fragmentStack.indexOf(tabPosition))
-                    fragmentStack.push(tabPosition)
-                } else {
-                    fragmentStack.push(tabPosition)
-                }
+//                if (fragmentStack.contains(tabPosition)) {
+//                    fragmentStack.remove(fragmentStack.indexOf(tabPosition))
+//                    fragmentStack.push(tabPosition)
+//                } else {
+//                    fragmentStack.push(tabPosition)
+//                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -122,13 +127,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (fragmentStack.isNotEmpty()) {
-            fragmentStack.pop()
-            if(view_pager.currentItem == 0) super.onBackPressed()
-            else view_pager.currentItem = fragmentStack.lastElement()
-        } else {
-            super.onBackPressed()
-        }
+        if(view_pager.currentItem == 0) super.onBackPressed()
+        else view_pager.currentItem = 0
     }
 
     private fun setTabSelection(selected: Boolean, position: Int, tv: TextView) {
@@ -160,5 +160,10 @@ class MainActivity : AppCompatActivity() {
         tv.setTextColor(color)
         tv.setTypeface(null, textWeight)
         tv.setCompoundDrawablesWithIntrinsicBounds(0, icon, 0, 0)
+    }
+
+    override fun onDestroy() {
+        disposable.dispose()
+        super.onDestroy()
     }
 }

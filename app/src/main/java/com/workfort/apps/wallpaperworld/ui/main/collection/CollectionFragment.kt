@@ -2,7 +2,6 @@ package com.workfort.apps.wallpaperworld.ui.main.collection
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.workfort.apps.util.helper.StaggeredGridItemDecoration
+import com.workfort.apps.util.helper.Toaster
 import com.workfort.apps.wallpaperworld.R
-import com.workfort.apps.wallpaperworld.data.DummyData
+import com.workfort.apps.wallpaperworld.data.local.appconst.Const
 import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperStaggeredAdapter
 import com.workfort.apps.wallpaperworld.ui.imageviewer.ImageViewerActivity
 import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
+import com.workfort.apps.wallpaperworld.ui.main.MainActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_collection.*
+import timber.log.Timber
 
 class CollectionFragment : Fragment() {
 
@@ -24,6 +28,7 @@ class CollectionFragment : Fragment() {
         fun newInstance() = CollectionFragment()
     }
 
+    private lateinit var adapter: WallpaperStaggeredAdapter
     private lateinit var viewModel: CollectionViewModel
 
     override fun onCreateView(
@@ -38,26 +43,52 @@ class CollectionFragment : Fragment() {
         viewModel = ViewModelProviders.of(this).get(CollectionViewModel::class.java)
 
         initView()
+        loadWallpapers()
     }
 
     private fun initView() {
         rv_wallpapers.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         rv_wallpapers.addItemDecoration(StaggeredGridItemDecoration(10, 2))
 
-        val wallpaperStaggeredAdapter = WallpaperStaggeredAdapter()
-        wallpaperStaggeredAdapter.setListener(object: WallpaperClickEvent{
+        adapter = WallpaperStaggeredAdapter()
+        adapter.setListener(object: WallpaperClickEvent{
             override fun onClickWallpaper(wallpaper: WallpaperEntity, position: Int) {
                 startActivity(Intent(context, ImageViewerActivity::class.java))
             }
         })
-        rv_wallpapers.adapter = wallpaperStaggeredAdapter
-        wallpaperStaggeredAdapter.setWallpaperList(DummyData.generateDummyData())
+        rv_wallpapers.adapter = adapter
 
         swipe_refresh.setOnRefreshListener {
-            Handler().postDelayed({
-                swipe_refresh.isRefreshing = false
-                wallpaperStaggeredAdapter.setWallpaperList(DummyData.generateDummyData())
-            }, 1000)
+            loadWallpapers()
         }
+    }
+
+    private fun loadWallpapers() {
+        swipe_refresh.isRefreshing = true
+        img_no_data.visibility = View.VISIBLE
+        rv_wallpapers.visibility = View.INVISIBLE
+
+        val parent = (activity as MainActivity)
+
+        parent.disposable.add(parent.apiService.getWallpapers(Const.WallpaperType.COLLECTION)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    swipe_refresh.isRefreshing = false
+                    if(it.error || it.wallpapers.isEmpty()) {
+                        Toaster(context!!).showToast(it.message)
+                    }else {
+                        img_no_data.visibility = View.INVISIBLE
+                        rv_wallpapers.visibility = View.VISIBLE
+                        adapter.setWallpaperList(it.wallpapers)
+                    }
+                }, {
+                    Timber.e(it)
+                    swipe_refresh.isRefreshing = false
+                    Toaster(context!!).showToast(it.message.toString())
+                }
+            )
+        )
     }
 }

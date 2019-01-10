@@ -2,6 +2,7 @@ package com.workfort.apps.wallpaperworld.data.local.wallpaper
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 
 /*
 *  ****************************************************************************
@@ -20,8 +21,8 @@ data class WallpaperEntity (val id: Int,
                             val width: Int,
                             val height: Int,
                             val totalWow: Int,
-                            val uploaderId: String?,
-                            val uploaderName: String?): Parcelable {
+                            @SerializedName("uploader_id") val uploaderId: String?,
+                            @SerializedName("uploader_name") val uploaderName: String?): Parcelable {
 
     constructor(parcel: Parcel) : this(
         parcel.readInt(),

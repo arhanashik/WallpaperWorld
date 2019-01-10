@@ -14,4 +14,12 @@ public interface Const {
     interface RequestCode {
         int SEARCH =  10;
     }
+
+    interface WallpaperType {
+        String COLLECTION = "collection";
+        String TOP_CHART = "top_chart";
+        String POPULAR = "popular";
+        String PREMIUM = "premium";
+        String FAVOURITE = "favourite";
+    }
 }

@@ -40,11 +40,6 @@ class WallpaperStaggeredViewHolder(val binding: ItemStaggeredWallpaperBinding): 
             listener?.onClickWallpaper(wallpaper, adapterPosition)
         }
 
-        var imgRes = R.drawable.img_splash2
-        if(adapterPosition%2 == 0) imgRes = R.drawable.img_splash
-
-        if(adapterPosition == 3 || adapterPosition == 8 || adapterPosition == 10) imgRes = R.drawable.img_splash3
-
-        binding.imgWallpaper.load(imgRes)
+        binding.imgWallpaper.load(wallpaper.url)
     }
 }

@@ -10,9 +10,9 @@
                 android:id="@+id/img_no_data"
                 android:layout_width="84dp"
                 android:layout_height="84dp"
-                app:srcCompat="@drawable/ic_chart_border"
+                app:srcCompat="@drawable/ic_favorite_border"
                 android:contentDescription="@string/description_ic_no_favourite"
-                android:visibility="invisible"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,10 @@
             <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_wallpapers"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:visibility="invisible" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

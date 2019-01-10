@@ -1,11 +1,9 @@
 package com.workfort.apps.wallpaperworld.ui.imageviewer
 
 import android.content.Intent
-import android.graphics.*
-import android.graphics.drawable.Drawable
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.os.Environment
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
@@ -15,24 +13,21 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.workfort.apps.util.helper.AndroidUtil
+import com.workfort.apps.util.helper.FileUtil
+import com.workfort.apps.util.helper.ImageUtil
+import com.workfort.apps.util.helper.WallpaperUtil
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.data.DummyData
 import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperAdapter
 import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperDiffCallback
 import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
+import com.yalantis.ucrop.UCrop
 import com.yuyakaido.android.cardstackview.*
 import kotlinx.android.synthetic.main.activity_image_viewer.*
 import timber.log.Timber
 import java.util.*
-import androidx.core.content.ContextCompat
-import com.bumptech.glide.request.Request
-import com.bumptech.glide.request.target.SizeReadyCallback
-import com.bumptech.glide.request.target.Target
-import com.workfort.apps.util.helper.*
-import com.yalantis.ucrop.UCrop
-import com.yalantis.ucrop.model.AspectRatio
-import java.io.*
 
 
 class ImageViewerActivity: AppCompatActivity(), CardStackListener {

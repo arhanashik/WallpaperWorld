@@ -40,7 +40,7 @@ class ImageLoader {
                 .into(imageView)
         }
 
-        fun load(location: String, imageView: ImageView) {
+        fun load(location: String?, imageView: ImageView) {
             val requestOptions = RequestOptions()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .placeholder(R.drawable.ic_logo)

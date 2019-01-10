@@ -16,3 +16,7 @@ import android.widget.ImageView
 fun ImageView.load(res: Int){
     ImageLoader.load(res, this)
 }
+
+fun ImageView.load(url: String?){
+    ImageLoader.load(url, this)
+}
