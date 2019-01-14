@@ -1,37 +1,37 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
-INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
-INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
-INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
-INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
-INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
-INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
+ADDED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
+INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
+INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
+INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
+INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
+INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
+INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
 	package
-		ADDED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:11-56
-		INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
-		INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:11-56
+		INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
-		ADDED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
-		INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
+		INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
+		ADDED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
 	android:versionCode
-		INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
-		ADDED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
-		INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml:3:1-58
+		INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
 uses-sdk
-INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
-INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
-INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
-INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
-		ADDED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
-		INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
-		ADDED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
-		INJECTED from D:\My things\Work\AndroidProjects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Arhan Ashik\Desktop\Android-Projects\WallpaperWorld\cardstackview\src\main\AndroidManifest.xml

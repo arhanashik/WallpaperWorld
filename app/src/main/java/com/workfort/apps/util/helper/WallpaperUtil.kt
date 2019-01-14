@@ -16,10 +16,11 @@ class WallpaperUtil(val context: Context) {
         wallpaperManager!!.setResource(wallpaperRes)
     }
 
-    fun setWallpaper(bitmap: Bitmap) {
+    fun setWallpaper(bitmap: Bitmap, fixed: Boolean) {
+        if(fixed) wallpaperManager!!.setWallpaperOffsetSteps(0f,0f)
+        else wallpaperManager!!.setWallpaperOffsetSteps(1f, 1f)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-
             wallpaperManager!!.setBitmap(
                 bitmap,
                 null,

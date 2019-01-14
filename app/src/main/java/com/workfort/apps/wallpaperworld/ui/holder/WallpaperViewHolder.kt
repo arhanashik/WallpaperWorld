@@ -26,14 +26,10 @@ class WallpaperViewHolder(val binding: ItemWallpaperBinding): RecyclerView.ViewH
         binding.tvUploadedBy.text = uploadedBy
         binding.tvWowCount.text = wallpaper.totalWow.toString()
 
+        binding.imgWallpaper.load(wallpaper.url)
+
         binding.imgWallpaper.setOnClickListener {
             listener?.onClickWallpaper(wallpaper, adapterPosition)
         }
-
-        var imgRes = R.drawable.img_splash2
-        if(adapterPosition%2 == 0) imgRes = R.drawable.img_splash
-        if(adapterPosition == 3 || adapterPosition == 8 || adapterPosition == 10) imgRes = R.drawable.img_splash3
-
-        binding.imgWallpaper.load(imgRes)
     }
 }

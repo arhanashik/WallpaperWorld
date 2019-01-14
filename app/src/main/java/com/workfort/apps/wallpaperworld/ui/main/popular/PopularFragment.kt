@@ -1,5 +1,6 @@
 package com.workfort.apps.wallpaperworld.ui.main.popular
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -15,6 +16,7 @@ import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
 import com.workfort.apps.util.helper.StaggeredGridItemDecoration
 import com.workfort.apps.util.helper.Toaster
 import com.workfort.apps.wallpaperworld.data.local.appconst.Const
+import com.workfort.apps.wallpaperworld.ui.imageviewer.ImageViewerActivity
 import com.workfort.apps.wallpaperworld.ui.main.MainActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -52,7 +54,7 @@ class PopularFragment : Fragment() {
         adapter = WallpaperStaggeredAdapter()
         adapter.setListener(object: WallpaperClickEvent {
             override fun onClickWallpaper(wallpaper: WallpaperEntity, position: Int) {
-                Toast.makeText(context, "${wallpaper.title} : $position", Toast.LENGTH_SHORT).show()
+                openImageViewer(wallpaper)
             }
         })
         rv_wallpapers.adapter = adapter
@@ -62,25 +64,37 @@ class PopularFragment : Fragment() {
         }
     }
 
+    private var page = 0
     private fun loadWallpapers() {
         swipe_refresh.isRefreshing = true
-        img_no_data.visibility = View.VISIBLE
-        rv_wallpapers.visibility = View.INVISIBLE
+        if(page == 0) {
+            img_no_data.visibility = View.VISIBLE
+            rv_wallpapers.visibility = View.INVISIBLE
+        }
 
         val parent = (activity as MainActivity)
 
-        parent.disposable.add(parent.apiService.getWallpapers(Const.WallpaperType.COLLECTION)
+        parent.disposable.add(parent.apiService.getWallpapers(
+            Const.WallpaperType.POPULAR, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     swipe_refresh.isRefreshing = false
-                    if(it.error || it.wallpapers.isEmpty()) {
+                    if(it.error) {
                         Toaster(context!!).showToast(it.message)
                     }else {
-                        img_no_data.visibility = View.INVISIBLE
-                        rv_wallpapers.visibility = View.VISIBLE
-                        adapter.setWallpaperList(it.wallpapers)
+                        if(it.wallpapers.isEmpty()){
+                            if(adapter.itemCount == 0)
+                                Toaster(context!!).showToast(it.message)
+                            else
+                                Toaster(context!!).showToast(getString(R.string.exception_no_more_item))
+                        }else {
+                            page++
+                            img_no_data.visibility = View.INVISIBLE
+                            rv_wallpapers.visibility = View.VISIBLE
+                            adapter.setWallpaperList(it.wallpapers)
+                        }
                     }
                 }, {
                     Timber.e(it)
@@ -89,5 +103,14 @@ class PopularFragment : Fragment() {
                 }
             )
         )
+    }
+
+    fun openImageViewer(wallpaper: WallpaperEntity) {
+        val intent = Intent(context, ImageViewerActivity::class.java)
+        intent.putExtra(Const.Key.WALLPAPER_TYPE, Const.WallpaperType.POPULAR)
+        intent.putExtra(Const.Key.WALLPAPER_LIST, adapter.getWallpaperList())
+        intent.putExtra(Const.Key.SELECTED_WALLPAPER, wallpaper)
+        intent.putExtra(Const.Key.PAGE, page)
+        startActivityForResult(intent, Const.RequestCode.IMAGE_PREVIEW)
     }
 }

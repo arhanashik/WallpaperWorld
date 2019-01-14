@@ -13,6 +13,15 @@ package com.workfort.apps.wallpaperworld.data.local.appconst;
 public interface Const {
     interface RequestCode {
         int SEARCH =  10;
+        int IMAGE_PREVIEW =  11;
+    }
+
+    interface Key {
+        String WALLPAPER_TYPE = "wallpaper_type";
+        String WALLPAPER_LIST = "wallpaper_list";
+        String SELECTED_WALLPAPER = "selected_wallpaper";
+        String PAGE = "page";
+        String SEARCH_QUERY = "search_query";
     }
 
     interface WallpaperType {
@@ -20,6 +29,7 @@ public interface Const {
         String TOP_CHART = "top_chart";
         String POPULAR = "popular";
         String PREMIUM = "premium";
-        String FAVOURITE = "favourite";
+        String FAVORITE = "favorite";
+        String SEARCH = "search";
     }
 }

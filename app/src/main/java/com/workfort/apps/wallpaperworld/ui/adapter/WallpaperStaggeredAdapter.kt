@@ -22,16 +22,25 @@ import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
 */
 
 class WallpaperStaggeredAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var listOfWallpapers = listOf<WallpaperEntity>()
+    private var listOfWallpapers = ArrayList<WallpaperEntity>()
     private var listener: WallpaperClickEvent? = null
 
     fun setWallpaperList(listOfWallpapers: List<WallpaperEntity>) {
-        this.listOfWallpapers = listOfWallpapers
+        this.listOfWallpapers.addAll(listOfWallpapers)
         notifyDataSetChanged()
+    }
+
+    fun getWallpaperList(): ArrayList<WallpaperEntity> {
+        return listOfWallpapers
     }
 
     fun setListener(listener: WallpaperClickEvent) {
         this.listener = listener
+    }
+
+    fun clear() {
+        listOfWallpapers.clear()
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

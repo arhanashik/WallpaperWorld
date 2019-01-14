@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/container"
@@ -12,7 +13,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:scaleType="center"
-                android:src="@drawable/img_splash3"
+                tools:src="@drawable/img_splash3"
                 android:contentDescription="@string/description_image_wallpaper"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -32,9 +33,9 @@
         <com.yuyakaido.android.cardstackview.CardStackView
                 android:id="@+id/card_stack_view"
                 android:paddingStart="25dp"
-                android:paddingTop="55dp"
-                android:paddingEnd="25dp"
-                android:paddingBottom="25dp"
+                android:paddingTop="45dp"
+                android:paddingEnd="0dp"
+                android:paddingBottom="45dp"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:clipToPadding="false"
@@ -48,7 +49,7 @@
                 android:id="@+id/btn_set"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:layout_marginBottom="60dp"
+                android:layout_marginBottom="80dp"
                 android:background="@drawable/bg_circle_selector"
                 android:text="@string/label_set"
                 android:textColor="@android:color/white"

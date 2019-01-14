@@ -17,7 +17,7 @@ class WallpaperDiffCallback(
     }
 
     override fun areItemsTheSame(oldPosition: Int, newPosition: Int): Boolean {
-        return old[oldPosition].id == new[newPosition].id
+        return old[oldPosition].url.equals(new[newPosition].url)
     }
 
     override fun areContentsTheSame(oldPosition: Int, newPosition: Int): Boolean {

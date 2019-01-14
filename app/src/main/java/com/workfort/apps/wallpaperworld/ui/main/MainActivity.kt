@@ -17,7 +17,7 @@ import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.databinding.CustomTabBinding
 import com.workfort.apps.wallpaperworld.ui.adapter.PagerAdapter
 import com.workfort.apps.wallpaperworld.ui.main.collection.CollectionFragment
-import com.workfort.apps.wallpaperworld.ui.main.favourite.FavouriteFragment
+import com.workfort.apps.wallpaperworld.ui.main.favourite.FavoriteFragment
 import com.workfort.apps.wallpaperworld.ui.main.popular.PopularFragment
 import com.workfort.apps.wallpaperworld.ui.main.premium.PremiumFragment
 import com.workfort.apps.wallpaperworld.ui.main.topchart.TopChartFragment
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         pagerAdapter.addItem(getString(R.string.label_top_chart), TopChartFragment.newInstance())
         pagerAdapter.addItem(getString(R.string.label_popular), PopularFragment.newInstance())
         pagerAdapter.addItem(getString(R.string.label_premium), PremiumFragment.newInstance())
-        pagerAdapter.addItem(getString(R.string.label_favourite), FavouriteFragment.newInstance())
+        pagerAdapter.addItem(getString(R.string.label_favourite), FavoriteFragment.newInstance())
 
         view_pager.adapter = pagerAdapter
         view_pager.offscreenPageLimit = pagerAdapter.count

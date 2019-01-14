@@ -1,6 +1,5 @@
 <resources>
-    <!--<string name="app_name">WallpaperWorld</string>-->
-    <string name="app_name">Tester</string>
+    <string name="app_name">WallpaperWorld</string>
 
     <string name="title_activity_main">Wallpaper World</string>
     <string name="title_fragment_wallpapers">All</string>
@@ -128,4 +127,5 @@
     <string name="label_premium">Premium</string>
     <string name="description_ic_option">Ic option</string>
     <string name="label_set">Set</string>
+    <string name="exception_no_more_item">No more item!</string>
 </resources>

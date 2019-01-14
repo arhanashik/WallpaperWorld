@@ -1,5 +1,6 @@
 package com.workfort.apps.util.helper
 
+import android.view.View
 import android.widget.ImageView
 
 /*
@@ -19,4 +20,8 @@ fun ImageView.load(res: Int){
 
 fun ImageView.load(url: String?){
     ImageLoader.load(url, this)
+}
+
+fun ImageView.loadWithPlatter(url: String?, view: View?){
+    ImageLoader.loadWithPlatter(url, this, view)
 }

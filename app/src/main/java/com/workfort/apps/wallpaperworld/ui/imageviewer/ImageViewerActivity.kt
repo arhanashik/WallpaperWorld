@@ -1,81 +1,96 @@
 package com.workfort.apps.wallpaperworld.ui.imageviewer
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
-import com.workfort.apps.util.helper.AndroidUtil
 import com.workfort.apps.util.helper.FileUtil
 import com.workfort.apps.util.helper.ImageUtil
 import com.workfort.apps.util.helper.WallpaperUtil
+import com.workfort.apps.util.helper.loadWithPlatter
+import com.workfort.apps.util.lib.remote.ApiService
 import com.workfort.apps.wallpaperworld.R
-import com.workfort.apps.wallpaperworld.data.DummyData
+import com.workfort.apps.wallpaperworld.data.local.appconst.Const
 import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperAdapter
 import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperDiffCallback
 import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
 import com.yalantis.ucrop.UCrop
 import com.yuyakaido.android.cardstackview.*
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_image_viewer.*
 import timber.log.Timber
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ImageViewerActivity: AppCompatActivity(), CardStackListener {
 
+    var disposable: CompositeDisposable = CompositeDisposable()
+    val apiService by lazy {
+        ApiService.create()
+    }
+
+    private var wallpaperType: String? = null
+    private var wallpaperList = ArrayList<WallpaperEntity>()
+    private var selectedWallpaper: WallpaperEntity? = null
+    private var searchQuery: String? = null
+    private var page: Int = 0
+
     private var adapter: WallpaperAdapter? = null
     private val manager by lazy { CardStackLayoutManager(this, this) }
 
-    private var visibleItemCount = 4
+    private var visibleItemCount = 3
     private var lastSwipeDirection: Stack<Direction> = Stack()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_viewer)
 
+        wallpaperType = intent.getStringExtra(Const.Key.WALLPAPER_TYPE)
+        wallpaperList = intent.getParcelableArrayListExtra(Const.Key.WALLPAPER_LIST)
+        selectedWallpaper = intent.getParcelableExtra(Const.Key.SELECTED_WALLPAPER)
+        searchQuery = intent.getStringExtra(Const.Key.SEARCH_QUERY)
+        page = intent.getIntExtra(Const.Key.PAGE, 0)
+
+        if(TextUtils.isEmpty(wallpaperType) || wallpaperList.isEmpty()) {
+            val returnIntent = Intent()
+            setResult(RESULT_CANCELED, returnIntent)
+            finish()
+        }
+
         adapter = WallpaperAdapter()
-        adapter!!.setWallpaperList(DummyData.generateDummyData())
+        adapter!!.setWallpaperList(wallpaperList)
         adapter!!.setListener(object: WallpaperClickEvent {
             override fun onClickWallpaper(wallpaper: WallpaperEntity, position: Int) {
-
+                card_stack_view.visibility = View.INVISIBLE
+                overflow.visibility = View.INVISIBLE
             }
         })
+
+        img_overflow.setOnClickListener{
+            if(card_stack_view.visibility != View.VISIBLE) {
+                card_stack_view.visibility = View.VISIBLE
+                overflow.visibility = View.VISIBLE
+            }
+        }
 
         initializeCardStackView()
 
         btn_set.setOnClickListener {
-//            val wallpaper = BitmapFactory.decodeResource(resources, R.drawable.img_splash2)
-//
-//            val displayParams = AndroidUtil().getDisplayParams(this)
-//            Timber.e("width: %s, height: %s", displayParams.width, displayParams.height)
-//
-//            val target = object : SimpleTarget<Bitmap>(displayParams.width, displayParams.height) {
-//                override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-//                    WallpaperUtil(this@ImageViewerActivity).setWallpaper(bitmap)
-//                    Timber.e("width: %s, height: %s", bitmap.width, bitmap.height)
-//                }
-//            }
-//
-//            Glide.with(this)
-//                .asBitmap()
-//                .load(R.drawable.img_splash3)
-//                .into(target)
-
-            openCropOption(R.drawable.img_splash)
+            openCropOption(adapter!!.getWallpaper(manager.topPosition))
         }
     }
 
     private fun initializeCardStackView() {
-        manager.setStackFrom(StackFrom.Top)
+        manager.setStackFrom(StackFrom.Left)
         manager.setVisibleCount(visibleItemCount)
         manager.setTranslationInterval(8.0f)
         manager.setScaleInterval(0.95f)
@@ -91,6 +106,19 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
                 supportsChangeAnimations = false
             }
         }
+
+        val selectedPos = adapter!!.getWallpaperList().indexOf(selectedWallpaper)
+        if(selectedPos > 0) {
+            for (i in 1..selectedPos) {
+                lastSwipeDirection.push(Direction.Bottom)
+            }
+            card_stack_view.scrollToPosition(selectedPos)
+        }
+
+        if(adapter!!.itemCount == 1 || selectedPos == adapter!!.itemCount - 1) {
+            manager.setCanScrollHorizontal(false)
+            manager.setCanScrollVertical(false)
+        }
     }
 
     override fun onCardDragging(direction: Direction, ratio: Float) {
@@ -101,18 +129,10 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
         Timber.d("CardStackView:: onCardSwiped: p = ${manager.topPosition}, d = $direction")
         lastSwipeDirection.push(direction)
         if (manager.topPosition == adapter!!.itemCount - 5) {
-            //paginate()
+            paginate()
         }
-
-        var imgRes = R.drawable.img_splash2
-        if(manager.topPosition%2==0) {
-            imgRes = R.drawable.img_splash
-        }
-        if(manager.topPosition == 3 || manager.topPosition == 8 || manager.topPosition == 10)
-            imgRes = R.drawable.img_splash3
 
         val lastPosition = adapter!!.itemCount - 1
-        Timber.d("CardStackView:: onCardSwiped: lastPosition = $lastPosition")
 
         when(manager.topPosition) {
             lastPosition - visibleItemCount -> {
@@ -126,8 +146,6 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
                 manager.setCanScrollVertical(false)
             }
         }
-
-        img_overflow.setImageBitmap(BitmapFactory.decodeResource(resources, imgRes))
     }
 
     override fun onCardRewound() {
@@ -135,7 +153,7 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
         val lastPosition = adapter!!.itemCount - 1
         when(manager.topPosition) {
             lastPosition - visibleItemCount -> {
-                if(visibleItemCount < 4) {
+                if(visibleItemCount < 3) {
                     visibleItemCount++
                     manager.setVisibleCount(visibleItemCount)
                 }
@@ -150,6 +168,8 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
     override fun onCardAppeared(view: View, position: Int) {
         val textView = view.findViewById<TextView>(R.id.tv_title)
         Timber.d("CardStackView:: onCardAppeared: ($position) ${textView.text}")
+
+        img_overflow.loadWithPlatter(adapter!!.getWallpaper(position).url, overflow)
     }
 
     override fun onCardDisappeared(view: View, position: Int) {
@@ -158,8 +178,42 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
     }
 
     private fun paginate() {
+        if(wallpaperType!!.equals(Const.WallpaperType.SEARCH)) {
+            disposable.add(apiService.search(1, searchQuery!!, page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        if(!it.error && it.wallpapers.isNotEmpty()) {
+                            page++
+                            includeResultToAdapter(it.wallpapers)
+                        }
+                    }, {
+                        Timber.e(it)
+                    }
+                )
+            )
+        }else {
+            disposable.add(apiService.getWallpapers(wallpaperType!!, page)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
+                        if(!it.error && it.wallpapers.isNotEmpty()) {
+                            page++
+                            includeResultToAdapter(it.wallpapers)
+                        }
+                    }, {
+                        Timber.e(it)
+                    }
+                )
+            )
+        }
+    }
+
+    private fun includeResultToAdapter(wallpapers: List<WallpaperEntity>) {
         val old = adapter!!.getWallpaperList()
-        val new = old.plus(DummyData.generateDummyData())
+        val new = old.plus(wallpapers)
         val callback = WallpaperDiffCallback(old, new)
         val result = DiffUtil.calculateDiff(callback)
         adapter!!.setWallpaperList(new)
@@ -167,20 +221,25 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
     }
 
     override fun onBackPressed() {
-        if(lastSwipeDirection.empty()) {
-            super.onBackPressed()
+        if(card_stack_view.visibility != View.VISIBLE) {
+            card_stack_view.visibility = View.VISIBLE
+            overflow.visibility = View.VISIBLE
         }else {
-            if(lastSwipeDirection.size == adapter!!.itemCount - 1) {
-                manager.setCanScrollHorizontal(true)
-                manager.setCanScrollVertical(true)
+            if(lastSwipeDirection.empty()) {
+                super.onBackPressed()
+            }else {
+                if(lastSwipeDirection.size == adapter!!.itemCount - 1) {
+                    manager.setCanScrollHorizontal(true)
+                    manager.setCanScrollVertical(true)
+                }
+                val setting = RewindAnimationSetting.Builder()
+                    .setDirection(lastSwipeDirection.pop())
+                    .setDuration(200)
+                    .setInterpolator(DecelerateInterpolator())
+                    .build()
+                manager.setRewindAnimationSetting(setting)
+                card_stack_view.rewind()
             }
-            val setting = RewindAnimationSetting.Builder()
-                .setDirection(lastSwipeDirection.pop())
-                .setDuration(200)
-                .setInterpolator(DecelerateInterpolator())
-                .build()
-            manager.setRewindAnimationSetting(setting)
-            card_stack_view.rewind()
         }
     }
 
@@ -191,38 +250,27 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
             val resultUri = UCrop.getOutput(data!!)
             Timber.e("uri: %s", resultUri.toString())
 
-            val displayParams = AndroidUtil().getDisplayParams(this)
-
-            val target = object : SimpleTarget<Bitmap>(displayParams.width, displayParams.height) {
-                override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                    WallpaperUtil(this@ImageViewerActivity).setWallpaper(bitmap)
-                    Timber.e("width: %s, height: %s", bitmap.width, bitmap.height)
-                }
-            }
-
-//            val target = object : GliderTarget(){
-//                override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-//                    WallpaperUtil(this@ImageViewerActivity).setWallpaper(bitmap)
-//                    Timber.e("width: %s, height: %s", bitmap.width, bitmap.height)
-//                }
-//            }
-
-            Glide.with(this)
-                .asBitmap()
-                .load(resultUri)
-                .into(target)
+            val bitmap = ImageUtil().uriToBitmap(this, resultUri!!)
+            WallpaperUtil(this@ImageViewerActivity).setWallpaper(bitmap!!, true)
+            Timber.e("width: %s, height: %s", bitmap.width, bitmap.height)
 
         } else if (resultCode == UCrop.RESULT_ERROR) {
             Timber.e(UCrop.getError(data!!))
         }
     }
 
-    private fun openCropOption(resource: Int) {
+    private fun openCropOption(wallpaper: WallpaperEntity) {
         try {
-            val uri = FileUtil().saveBitmap(BitmapFactory.decodeResource(resources, resource))
+            val bitmap = ImageUtil().drawableToBitmap(img_overflow.drawable)
+            val uri = FileUtil().saveBitmap(bitmap)
             ImageUtil().cropImage(this, uri)
         } catch (ex: Exception) {
             ex.printStackTrace()
         }
+    }
+
+    override fun onDestroy() {
+        disposable.dispose()
+        super.onDestroy()
     }
 }

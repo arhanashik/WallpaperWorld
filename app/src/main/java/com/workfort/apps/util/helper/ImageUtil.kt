@@ -1,19 +1,25 @@
 package com.workfort.apps.util.helper
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.PorterDuff
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
-import android.os.Environment
 import androidx.core.content.ContextCompat
 import com.workfort.apps.wallpaperworld.R
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.model.AspectRatio
 import timber.log.Timber
-import java.io.File
 import java.util.*
+import android.graphics.BitmapFactory
+import android.os.ParcelFileDescriptor
+import com.workfort.apps.WallpaperWorldApp
+import java.io.IOException
+
 
 class ImageUtil {
 
@@ -67,5 +73,39 @@ class ImageUtil {
         val colour = opacity and 0xFF shl 24
         canvas.drawColor(colour, PorterDuff.Mode.DST_IN)
         return mutableBitmap
+    }
+
+    fun drawableToBitmap(drawable: Drawable): Bitmap {
+        if (drawable is BitmapDrawable) {
+            return drawable.bitmap
+        }
+
+        var width = drawable.intrinsicWidth
+        width = if (width > 0) width else 1
+        var height = drawable.intrinsicHeight
+        height = if (height > 0) height else 1
+
+        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, canvas.width, canvas.height)
+        drawable.draw(canvas)
+
+        return bitmap
+    }
+
+    fun uriToBitmap(context: Context, selectedFileUri: Uri): Bitmap? {
+        var bitmap: Bitmap? = null
+        try {
+            val parcelFileDescriptor = context.contentResolver
+                .openFileDescriptor(selectedFileUri, "r")
+            val fileDescriptor = parcelFileDescriptor!!.fileDescriptor
+            bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor)
+
+            parcelFileDescriptor.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return bitmap
     }
 }
