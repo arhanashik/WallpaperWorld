@@ -9,4 +9,9 @@
     <color name="colorLightGrey">#D3D3D3</color>
     <color name="colorSilver">#C0C0C0</color>
     <color name="colorGrey">#7B7B7B</color>
+
+    <color name="colorFacebook">#4267b2</color>
+    <color name="colorFacebookDark">#385697</color>
+    <color name="colorGoogle">#D50F25</color>
+    <color name="colorGoogleDark">#BB0C21</color>
 </resources>

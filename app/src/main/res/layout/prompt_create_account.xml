@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_16dp">
+
+        <TextView
+                android:id="@+id/tv_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/label_create_account"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/txt_16"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:textAllCaps="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+                android:id="@+id/btn_fb"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_facebook_selector"
+                android:padding="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
+                android:text="@string/label_facebook"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableStart="@drawable/ic_facebook"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_label"
+                app:layout_constraintEnd_toStartOf="@+id/btn_google"/>
+
+        <TextView
+                android:id="@+id/btn_google"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_google_selector"
+                android:padding="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:text="@string/label_google"
+                android:textColor="@android:color/white"
+                android:gravity="center"
+                android:clickable="true"
+                android:focusable="true"
+                android:drawableStart="@drawable/ic_google"
+                app:layout_constraintStart_toEndOf="@+id/btn_fb"
+                app:layout_constraintTop_toBottomOf="@+id/tv_label"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+                android:id="@+id/tv_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/description_create_account"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/txt_14"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_fb"
+                app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,11 +1,14 @@
 package com.workfort.apps.wallpaperworld.ui.main
 
+import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -14,7 +17,11 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayout
 import com.workfort.apps.util.lib.remote.ApiService
 import com.workfort.apps.wallpaperworld.R
+import com.workfort.apps.wallpaperworld.data.local.pref.PrefProp
+import com.workfort.apps.wallpaperworld.data.local.pref.PrefUtil
 import com.workfort.apps.wallpaperworld.databinding.CustomTabBinding
+import com.workfort.apps.wallpaperworld.databinding.PromptCreateAccountBinding
+import com.workfort.apps.wallpaperworld.ui.account.AccountActivity
 import com.workfort.apps.wallpaperworld.ui.adapter.PagerAdapter
 import com.workfort.apps.wallpaperworld.ui.main.collection.CollectionFragment
 import com.workfort.apps.wallpaperworld.ui.main.favourite.FavoriteFragment
@@ -126,6 +133,16 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(item!!.itemId == R.id.action_account) {
+            performAccountAction()
+
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onBackPressed() {
         if(view_pager.currentItem == 0) super.onBackPressed()
         else view_pager.currentItem = 0
@@ -160,6 +177,26 @@ class MainActivity : AppCompatActivity() {
         tv.setTextColor(color)
         tv.setTypeface(null, textWeight)
         tv.setCompoundDrawablesWithIntrinsicBounds(0, icon, 0, 0)
+    }
+
+    private fun performAccountAction() {
+        if(PrefUtil.get(PrefProp.IS_LOGGED_IN, false)!!) {
+            startActivity(Intent(this, AccountActivity::class.java))
+        }else {
+            val prompt = DataBindingUtil.inflate<PromptCreateAccountBinding>(layoutInflater,
+                R.layout.prompt_create_account, null, false)
+
+            prompt.btnFb.setOnClickListener {
+                startActivity(Intent(this, AccountActivity::class.java))
+            }
+
+            prompt.btnGoogle.setOnClickListener {
+
+            }
+
+            val dialog = AlertDialog.Builder(this).setView(prompt.root).create()
+            dialog.show()
+        }
     }
 
     override fun onDestroy() {
