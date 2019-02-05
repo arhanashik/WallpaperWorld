@@ -3,6 +3,7 @@ package com.workfort.apps.wallpaperworld.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
@@ -26,8 +27,12 @@ class WallpaperStaggeredAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()
     private var listener: WallpaperClickEvent? = null
 
     fun setWallpaperList(listOfWallpapers: List<WallpaperEntity>) {
+        val callback = WallpaperDiffCallback(this.listOfWallpapers.toList(), listOfWallpapers)
+        val result = DiffUtil.calculateDiff(callback)
+
+        this.listOfWallpapers.clear()
         this.listOfWallpapers.addAll(listOfWallpapers)
-        notifyDataSetChanged()
+        result.dispatchUpdatesTo(this)
     }
 
     fun getWallpaperList(): ArrayList<WallpaperEntity> {

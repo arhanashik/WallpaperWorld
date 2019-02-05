@@ -137,7 +137,7 @@ class SearchResultActivity : AppCompatActivity() {
                             page++
                             img_no_data.visibility = View.INVISIBLE
                             rv_wallpapers.visibility = View.VISIBLE
-                            includeResultToAdapter(it.wallpapers)
+                            adapter.setWallpaperList(it.wallpapers)
                         }
                     }
                 }, {
@@ -147,15 +147,6 @@ class SearchResultActivity : AppCompatActivity() {
                 }
             )
         )
-    }
-
-    private fun includeResultToAdapter(wallpapers: List<WallpaperEntity>) {
-        val old = adapter.getWallpaperList()
-        val new = old.plus(wallpapers)
-        val callback = WallpaperDiffCallback(old, new)
-        val result = DiffUtil.calculateDiff(callback)
-        adapter.setWallpaperList(new)
-        result.dispatchUpdatesTo(adapter)
     }
 
     fun openImageViewer(wallpaper: WallpaperEntity) {

@@ -17,10 +17,10 @@ class WallpaperDiffCallback(
     }
 
     override fun areItemsTheSame(oldPosition: Int, newPosition: Int): Boolean {
-        return old[oldPosition].url.equals(new[newPosition].url)
+        return old[oldPosition] == new[newPosition]
     }
 
     override fun areContentsTheSame(oldPosition: Int, newPosition: Int): Boolean {
-        return old[oldPosition] == new[newPosition]
+        return old[oldPosition].url.equals(new[newPosition].url)
     }
 }
