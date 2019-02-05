@@ -55,6 +55,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_label"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
+        <!--<com.google.android.gms.common.SignInButton-->
+                <!--android:id="@+id/sign_in_button"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:visibility="invisible"-->
+                <!--app:layout_constraintStart_toEndOf="@+id/btn_fb"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/tv_label"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"/>-->
+
         <TextView
                 android:id="@+id/tv_description"
                 android:layout_width="0dp"

@@ -14,6 +14,8 @@ public interface Const {
     interface RequestCode {
         int SEARCH =  10;
         int IMAGE_PREVIEW =  11;
+        int GOOGLE_SIGN_IN = 101;
+        int FACEBOOK_SIGN_IN = 202;
     }
 
     interface Key {

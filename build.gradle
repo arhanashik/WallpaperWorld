@@ -47,6 +47,8 @@ ext{
     navigation = '1.0.0-alpha07'
     multidex = '2.0.1'
 
+    play_service = '16.0.1'
+
     junit = '4.12'
     runner = '1.1.0-alpha3'
     espresso = '3.1.0-alpha3'

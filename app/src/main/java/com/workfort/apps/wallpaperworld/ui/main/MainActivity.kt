@@ -14,9 +14,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.tabs.TabLayout
+import com.workfort.apps.util.helper.Toaster
 import com.workfort.apps.util.lib.remote.ApiService
 import com.workfort.apps.wallpaperworld.R
+import com.workfort.apps.wallpaperworld.data.local.appconst.Const
 import com.workfort.apps.wallpaperworld.data.local.pref.PrefProp
 import com.workfort.apps.wallpaperworld.data.local.pref.PrefUtil
 import com.workfort.apps.wallpaperworld.databinding.CustomTabBinding
@@ -30,6 +36,8 @@ import com.workfort.apps.wallpaperworld.ui.main.premium.PremiumFragment
 import com.workfort.apps.wallpaperworld.ui.main.topchart.TopChartFragment
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -37,6 +45,9 @@ class MainActivity : AppCompatActivity() {
     val apiService by lazy {
         ApiService.create()
     }
+
+
+    private var mGoogleSignInClient: GoogleSignInClient? = null
 
     //private var fragmentStack: Stack<Int> = Stack()
 
@@ -58,6 +69,8 @@ class MainActivity : AppCompatActivity() {
         //fragmentStack.push(0)
 
         setupTabs()
+
+        configureGoogleSignIn()
     }
 
     private fun setupTabs() {
@@ -143,6 +156,23 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == Const.RequestCode.GOOGLE_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+
+            try {
+                val account = task.getResult(ApiException::class.java)
+
+                Toaster(this).showToast("Hello " + account!!.displayName)
+            } catch (e: ApiException) {
+                Timber.w("signInResult:failed code=%s", e.statusCode)
+                Toaster(this).showToast("Hello " + e.statusCode)
+            }
+        }
+    }
+
     override fun onBackPressed() {
         if(view_pager.currentItem == 0) super.onBackPressed()
         else view_pager.currentItem = 0
@@ -191,12 +221,30 @@ class MainActivity : AppCompatActivity() {
             }
 
             prompt.btnGoogle.setOnClickListener {
-
+                performGoogleSignIn()
             }
 
             val dialog = AlertDialog.Builder(this).setView(prompt.root).create()
             dialog.show()
         }
+    }
+
+    private fun performGoogleSignIn() {
+        val account = GoogleSignIn.getLastSignedInAccount(this)
+        if(account != null) {
+            Toaster(this).showToast("Hello " + account.displayName)
+            return
+        }
+
+        startActivityForResult(mGoogleSignInClient!!.signInIntent, Const.RequestCode.GOOGLE_SIGN_IN)
+    }
+
+    private fun configureGoogleSignIn() {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestProfile()
+            .requestEmail()
+            .build()
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
     }
 
     override fun onDestroy() {
