@@ -34,7 +34,9 @@ import com.workfort.apps.wallpaperworld.ui.main.favourite.FavoriteFragment
 import com.workfort.apps.wallpaperworld.ui.main.popular.PopularFragment
 import com.workfort.apps.wallpaperworld.ui.main.premium.PremiumFragment
 import com.workfort.apps.wallpaperworld.ui.main.topchart.TopChartFragment
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 
@@ -46,10 +48,7 @@ class MainActivity : AppCompatActivity() {
         ApiService.create()
     }
 
-
     private var mGoogleSignInClient: GoogleSignInClient? = null
-
-    //private var fragmentStack: Stack<Int> = Stack()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +65,6 @@ class MainActivity : AppCompatActivity() {
         view_pager.adapter = pagerAdapter
         view_pager.offscreenPageLimit = pagerAdapter.count
         tab_layout.setupWithViewPager(view_pager)
-        //fragmentStack.push(0)
 
         setupTabs()
 
@@ -113,13 +111,6 @@ class MainActivity : AppCompatActivity() {
                 if (view is TextView) {
                     setTabSelection(true, tabPosition!!, view)
                 }
-
-//                if (fragmentStack.contains(tabPosition)) {
-//                    fragmentStack.remove(fragmentStack.indexOf(tabPosition))
-//                    fragmentStack.push(tabPosition)
-//                } else {
-//                    fragmentStack.push(tabPosition)
-//                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -165,7 +156,9 @@ class MainActivity : AppCompatActivity() {
             try {
                 val account = task.getResult(ApiException::class.java)
 
-                Toaster(this).showToast("Hello " + account!!.displayName)
+                Toaster(this).showToast("Completing sign up for " + account!!.displayName)
+                signUp(account.displayName!!, account.id!!, account.id!!, account.email!!,
+                    "1", Const.AuthType.GOOGLE)
             } catch (e: ApiException) {
                 Timber.w("signInResult:failed code=%s", e.statusCode)
                 Toaster(this).showToast("Hello " + e.statusCode)
@@ -232,7 +225,9 @@ class MainActivity : AppCompatActivity() {
     private fun performGoogleSignIn() {
         val account = GoogleSignIn.getLastSignedInAccount(this)
         if(account != null) {
-            Toaster(this).showToast("Hello " + account.displayName)
+            Toaster(this).showToast("Completing sign up for " + account.displayName)
+            signUp(account.displayName!!, account.id!!, account.id!!, account.email!!,
+                "1", Const.AuthType.GOOGLE)
             return
         }
 
@@ -245,6 +240,27 @@ class MainActivity : AppCompatActivity() {
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+    }
+
+    private fun signUp(name: String, username: String, password: String, email: String, avatar: String,
+                       authType: String) {
+        disposable.add(apiService.signUp(name, username, password, email, avatar, authType)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    Toaster(this).showToast(it.message)
+                    if(!it.error) {
+                        val intent = Intent(this, AccountActivity::class.java)
+                        intent.putExtra(Const.Key.USER, it.user)
+                        startActivity(intent)
+                    }
+                }, {
+                    Timber.e(it)
+                    Toaster(this).showToast(it.message.toString())
+                }
+            )
+        )
     }
 
     override fun onDestroy() {

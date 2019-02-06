@@ -19,6 +19,7 @@ public interface Const {
     }
 
     interface Key {
+        String USER = "user";
         String WALLPAPER_TYPE = "wallpaper_type";
         String WALLPAPER_LIST = "wallpaper_list";
         String SELECTED_WALLPAPER = "selected_wallpaper";
@@ -33,5 +34,10 @@ public interface Const {
         String PREMIUM = "premium";
         String FAVORITE = "favorite";
         String SEARCH = "search";
+    }
+
+    interface AuthType {
+        String FACEBOOK = "facebook";
+        String GOOGLE = "google";
     }
 }
