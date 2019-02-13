@@ -13,9 +13,9 @@ android {
         minSdkVersion min_sdk
         targetSdkVersion target_sdk
         versionName version_name
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {

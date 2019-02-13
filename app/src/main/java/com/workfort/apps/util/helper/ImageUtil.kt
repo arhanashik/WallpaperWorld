@@ -39,9 +39,8 @@ class ImageUtil {
             options.setCompressionFormat(Bitmap.CompressFormat.JPEG)
             options.setCompressionQuality(100)
             options.setFreeStyleCropEnabled(false)
-            val ratio = AspectRatio("Scrolling", 1f, 1f)
-            val ratio2 = AspectRatio("Fixed", displayParams.width.toFloat(), displayParams.height.toFloat())
-            options.setAspectRatioOptions(0, ratio, ratio2)
+            val ratio = AspectRatio("Fixed", displayParams.width.toFloat(), displayParams.height.toFloat())
+            options.setAspectRatioOptions(0, ratio)
 
             // Color palette
             options.setToolbarColor(ContextCompat.getColor(activity, R.color.colorPrimary))

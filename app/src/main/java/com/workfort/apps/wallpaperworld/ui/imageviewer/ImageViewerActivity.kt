@@ -6,17 +6,17 @@ import android.text.TextUtils
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DiffUtil
-import com.workfort.apps.util.helper.FileUtil
-import com.workfort.apps.util.helper.ImageUtil
-import com.workfort.apps.util.helper.WallpaperUtil
-import com.workfort.apps.util.helper.loadWithPlatter
+import com.workfort.apps.util.helper.*
 import com.workfort.apps.util.lib.remote.ApiService
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.data.local.appconst.Const
 import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
+import com.workfort.apps.wallpaperworld.databinding.PromptWallpaperSetOptionBinding
 import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperAdapter
 import com.workfort.apps.wallpaperworld.ui.adapter.WallpaperDiffCallback
 import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
@@ -85,7 +85,7 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
         initializeCardStackView()
 
         btn_set.setOnClickListener {
-            openCropOption(adapter!!.getWallpaper(manager.topPosition))
+            showSetOption(adapter!!.getWallpaper(manager.topPosition))
         }
     }
 
@@ -252,11 +252,36 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
 
             val bitmap = ImageUtil().uriToBitmap(this, resultUri!!)
             WallpaperUtil(this@ImageViewerActivity).setWallpaper(bitmap!!, true)
+            Toaster(this).showToast("Wallpaper set successfully!")
             Timber.e("width: %s, height: %s", bitmap.width, bitmap.height)
 
         } else if (resultCode == UCrop.RESULT_ERROR) {
             Timber.e(UCrop.getError(data!!))
         }
+    }
+
+    private fun showSetOption(wallpaper: WallpaperEntity) {
+        val binding = DataBindingUtil.inflate<PromptWallpaperSetOptionBinding>(
+            layoutInflater, R.layout.prompt_wallpaper_set_option, null, false
+        )
+
+        val setDialog = AlertDialog.Builder(this)
+            .setView(binding.root)
+            .create()
+
+        binding.btnSetFull.setOnClickListener { setDialog.dismiss(); setScrollingWallpaper() }
+        binding.txtSetFull.setOnClickListener { setDialog.dismiss(); setScrollingWallpaper() }
+
+        binding.btnSetCustom.setOnClickListener { setDialog.dismiss(); openCropOption(wallpaper) }
+        binding.txtSetCustom.setOnClickListener { setDialog.dismiss(); openCropOption(wallpaper) }
+
+        setDialog.show()
+    }
+
+    private fun setScrollingWallpaper() {
+        val bitmap = ImageUtil().drawableToBitmap(img_overflow.drawable)
+        WallpaperUtil(this).setWallpaper(bitmap, false)
+        Toaster(this).showToast("Wallpaper set successfully!")
     }
 
     private fun openCropOption(wallpaper: WallpaperEntity) {

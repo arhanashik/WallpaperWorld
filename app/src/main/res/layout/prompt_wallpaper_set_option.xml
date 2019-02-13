@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/space_16dp"
+            android:background="@android:color/white">
+
+        <ImageView
+                android:id="@+id/btn_set_full"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/shape_rectangle_selector"
+                android:contentDescription="@string/description_wallpaper_set_variation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/btn_set_custom"
+                app:layout_constraintEnd_toStartOf="@+id/btn_set_custom"
+                app:layout_constraintBottom_toBottomOf="@+id/btn_set_custom"/>
+
+        <TextView
+                android:id="@+id/txt_set_full"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Scrolling"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/txt_16"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="@+id/btn_set_full"
+                app:layout_constraintTop_toBottomOf="@+id/btn_set_full"
+                app:layout_constraintEnd_toEndOf="@+id/btn_set_full"/>
+
+        <ImageView
+                android:id="@+id/btn_set_custom"
+                android:layout_width="70dp"
+                android:layout_height="100dp"
+                android:layout_margin="5dp"
+                android:src="@drawable/shape_rectangle_selector"
+                android:contentDescription="@string/description_wallpaper_set_variation"
+                app:layout_constraintStart_toEndOf="@+id/btn_set_full"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+                android:id="@+id/txt_set_custom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="Fixed"
+                android:textColor="@android:color/black"
+                android:textStyle="bold"
+                android:textSize="@dimen/txt_16"
+                android:gravity="center"
+                app:layout_constraintStart_toStartOf="@+id/btn_set_custom"
+                app:layout_constraintTop_toBottomOf="@+id/btn_set_custom"
+                app:layout_constraintEnd_toEndOf="@+id/btn_set_custom"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
