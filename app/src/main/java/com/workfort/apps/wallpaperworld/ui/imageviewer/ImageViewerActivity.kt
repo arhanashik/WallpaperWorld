@@ -250,10 +250,19 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
             val resultUri = UCrop.getOutput(data!!)
             Timber.e("uri: %s", resultUri.toString())
 
-            val bitmap = ImageUtil().uriToBitmap(this, resultUri!!)
-            WallpaperUtil(this@ImageViewerActivity).setWallpaper(bitmap!!, true)
-            Toaster(this).showToast("Wallpaper set successfully!")
-            Timber.e("width: %s, height: %s", bitmap.width, bitmap.height)
+            btn_set.isEnabled = false
+            pb.visibility = View.VISIBLE
+            Thread {
+                val bitmap = ImageUtil().uriToBitmap(this, resultUri!!)
+                WallpaperUtil(this@ImageViewerActivity).setWallpaper(bitmap!!, true)
+                Timber.e("width: %s, height: %s", bitmap.width, bitmap.height)
+
+                runOnUiThread {
+                    btn_set.isEnabled = true
+                    pb.visibility = View.INVISIBLE
+                    Toaster(this).showToast("Wallpaper set successfully!")
+                }
+            }.start()
 
         } else if (resultCode == UCrop.RESULT_ERROR) {
             Timber.e(UCrop.getError(data!!))
@@ -279,9 +288,18 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
     }
 
     private fun setScrollingWallpaper() {
-        val bitmap = ImageUtil().drawableToBitmap(img_overflow.drawable)
-        WallpaperUtil(this).setWallpaper(bitmap, false)
-        Toaster(this).showToast("Wallpaper set successfully!")
+        btn_set.isEnabled = false
+        pb.visibility = View.VISIBLE
+        Thread {
+            val bitmap = ImageUtil().drawableToBitmap(img_overflow.drawable)
+            WallpaperUtil(this).setWallpaper(bitmap, false)
+
+            runOnUiThread {
+                btn_set.isEnabled = true
+                pb.visibility = View.INVISIBLE
+                Toaster(this).showToast("Wallpaper set successfully!")
+            }
+        }.start()
     }
 
     private fun openCropOption(wallpaper: WallpaperEntity) {

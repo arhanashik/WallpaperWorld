@@ -62,5 +62,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
+
+        <ProgressBar
+                android:id="@+id/pb"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_marginBottom="70dp"
+                android:indeterminate="true"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

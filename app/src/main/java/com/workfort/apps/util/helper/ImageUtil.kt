@@ -3,6 +3,7 @@ package com.workfort.apps.util.helper
 import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
@@ -14,11 +15,8 @@ import com.workfort.apps.wallpaperworld.R
 import com.yalantis.ucrop.UCrop
 import com.yalantis.ucrop.model.AspectRatio
 import timber.log.Timber
-import java.util.*
-import android.graphics.BitmapFactory
-import android.os.ParcelFileDescriptor
-import com.workfort.apps.WallpaperWorldApp
 import java.io.IOException
+import java.util.*
 
 
 class ImageUtil {
@@ -41,6 +39,8 @@ class ImageUtil {
             options.setFreeStyleCropEnabled(false)
             val ratio = AspectRatio("Fixed", displayParams.width.toFloat(), displayParams.height.toFloat())
             options.setAspectRatioOptions(0, ratio)
+
+            options.setToolbarTitle(activity.getString(R.string.title_activity_edit_wallpaper))
 
             // Color palette
             options.setToolbarColor(ContextCompat.getColor(activity, R.color.colorPrimary))
