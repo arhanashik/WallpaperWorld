@@ -44,9 +44,7 @@ import timber.log.Timber
 class MainActivity : AppCompatActivity() {
 
     var disposable: CompositeDisposable = CompositeDisposable()
-    val apiService by lazy {
-        ApiService.create()
-    }
+    val apiService by lazy { ApiService.create() }
 
     private var mGoogleSignInClient: GoogleSignInClient? = null
 
@@ -158,7 +156,7 @@ class MainActivity : AppCompatActivity() {
 
                 Toaster(this).showToast("Completing sign up for " + account!!.displayName)
                 signUp(account.displayName!!, account.id!!, account.id!!, account.email!!,
-                    "1", Const.AuthType.GOOGLE)
+                    account.photoUrl.toString(), Const.AuthType.GOOGLE)
             } catch (e: ApiException) {
                 Timber.w("signInResult:failed code=%s", e.statusCode)
                 Toaster(this).showToast("Hello " + e.statusCode)
@@ -226,8 +224,8 @@ class MainActivity : AppCompatActivity() {
         val account = GoogleSignIn.getLastSignedInAccount(this)
         if(account != null) {
             Toaster(this).showToast("Completing sign up for " + account.displayName)
-            signUp(account.displayName!!, account.id!!, account.id!!, account.email!!,
-                "1", Const.AuthType.GOOGLE)
+            signUp(account.displayName!!, account.id!!, account.id!!, account.email!!, account.photoUrl.toString(),
+                Const.AuthType.GOOGLE)
             return
         }
 
@@ -236,7 +234,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun configureGoogleSignIn() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestProfile()
             .requestEmail()
             .build()
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)

@@ -34,6 +34,7 @@ public interface Const {
         String PREMIUM = "premium";
         String FAVORITE = "favorite";
         String SEARCH = "search";
+        String OWN = "own";
     }
 
     interface AuthType {

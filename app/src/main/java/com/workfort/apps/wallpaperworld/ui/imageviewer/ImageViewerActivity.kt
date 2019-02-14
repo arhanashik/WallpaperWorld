@@ -33,10 +33,8 @@ import kotlin.collections.ArrayList
 
 class ImageViewerActivity: AppCompatActivity(), CardStackListener {
 
-    var disposable: CompositeDisposable = CompositeDisposable()
-    val apiService by lazy {
-        ApiService.create()
-    }
+    private var disposable: CompositeDisposable = CompositeDisposable()
+    private val apiService by lazy { ApiService.create() }
 
     private var wallpaperType: String? = null
     private var wallpaperList = ArrayList<WallpaperEntity>()
@@ -49,6 +47,7 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
 
     private var visibleItemCount = 3
     private var lastSwipeDirection: Stack<Direction> = Stack()
+    private var prevSwipeDirection: Direction? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,6 +127,7 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
     override fun onCardSwiped(direction: Direction) {
         Timber.d("CardStackView:: onCardSwiped: p = ${manager.topPosition}, d = $direction")
         lastSwipeDirection.push(direction)
+        prevSwipeDirection = direction
         if (manager.topPosition == adapter!!.itemCount - 5) {
             paginate()
         }
@@ -178,7 +178,7 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
     }
 
     private fun paginate() {
-        if(wallpaperType!!.equals(Const.WallpaperType.SEARCH)) {
+        if(wallpaperType!! == Const.WallpaperType.SEARCH) {
             disposable.add(apiService.search(1, searchQuery!!, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -225,20 +225,34 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
             card_stack_view.visibility = View.VISIBLE
             overflow.visibility = View.VISIBLE
         }else {
-            if(lastSwipeDirection.empty()) {
-                super.onBackPressed()
-            }else {
-                if(lastSwipeDirection.size == adapter!!.itemCount - 1) {
-                    manager.setCanScrollHorizontal(true)
-                    manager.setCanScrollVertical(true)
-                }
+//            if(lastSwipeDirection.empty()) {
+//                super.onBackPressed()
+//            }else {
+//                if(lastSwipeDirection.size == adapter!!.itemCount - 1) {
+//                    manager.setCanScrollHorizontal(true)
+//                    manager.setCanScrollVertical(true)
+//                }
+//                val setting = RewindAnimationSetting.Builder()
+//                    .setDirection(lastSwipeDirection.pop())
+//                    .setDuration(200)
+//                    .setInterpolator(DecelerateInterpolator())
+//                    .build()
+//                manager.setRewindAnimationSetting(setting)
+//                card_stack_view.rewind()
+//            }
+            if(prevSwipeDirection == null) super.onBackPressed()
+            else {
+                manager.setCanScrollHorizontal(true)
+                manager.setCanScrollVertical(true)
+
                 val setting = RewindAnimationSetting.Builder()
-                    .setDirection(lastSwipeDirection.pop())
+                    .setDirection(prevSwipeDirection)
                     .setDuration(200)
                     .setInterpolator(DecelerateInterpolator())
                     .build()
                 manager.setRewindAnimationSetting(setting)
                 card_stack_view.rewind()
+                prevSwipeDirection = null
             }
         }
     }
@@ -260,7 +274,7 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
                 runOnUiThread {
                     btn_set.isEnabled = true
                     pb.visibility = View.INVISIBLE
-                    Toaster(this).showToast("Wallpaper set successfully!")
+                    Toaster(this).showToast(getString(R.string.wallpaper_set_success))
                 }
             }.start()
 
@@ -297,7 +311,7 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
             runOnUiThread {
                 btn_set.isEnabled = true
                 pb.visibility = View.INVISIBLE
-                Toaster(this).showToast("Wallpaper set successfully!")
+                Toaster(this).showToast(getString(R.string.wallpaper_set_success))
             }
         }.start()
     }
