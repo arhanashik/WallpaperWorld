@@ -72,6 +72,10 @@ class ImageViewerActivity: AppCompatActivity(), CardStackListener {
                 card_stack_view.visibility = View.INVISIBLE
                 overflow.visibility = View.INVISIBLE
             }
+
+            override fun onClickWow(wallpaper: WallpaperEntity, position: Int) {
+
+            }
         })
 
         img_overflow.setOnClickListener{

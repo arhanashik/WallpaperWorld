@@ -55,6 +55,10 @@ class TopChartFragment : Fragment() {
             override fun onClickWallpaper(wallpaper: WallpaperEntity, position: Int) {
                 openImageViewer(wallpaper)
             }
+
+            override fun onClickWow(wallpaper: WallpaperEntity, position: Int) {
+
+            }
         })
         rv_wallpapers.adapter = adapter
 

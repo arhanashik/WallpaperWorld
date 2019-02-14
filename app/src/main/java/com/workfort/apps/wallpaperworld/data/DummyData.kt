@@ -23,7 +23,11 @@ object DummyData {
             "",
             180,
             180,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -35,7 +39,11 @@ object DummyData {
             "",
             180,
             150,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -47,7 +55,11 @@ object DummyData {
             "",
             180,
             130,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -59,7 +71,11 @@ object DummyData {
             "",
             190,
             190,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -71,7 +87,11 @@ object DummyData {
             "",
             180,
             205,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -83,7 +103,11 @@ object DummyData {
             "",
             180,
             140,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -95,7 +119,11 @@ object DummyData {
             "",
             180,
             150,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -107,7 +135,11 @@ object DummyData {
             "",
             180,
             220,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -119,7 +151,11 @@ object DummyData {
             "",
             180,
             140,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -131,7 +167,11 @@ object DummyData {
             "",
             180,
             200,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -143,7 +183,11 @@ object DummyData {
             "",
             180,
             210,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -155,7 +199,11 @@ object DummyData {
             "",
             180,
             130,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -167,7 +215,11 @@ object DummyData {
             "",
             180,
             220,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -179,7 +231,11 @@ object DummyData {
             "",
             180,
             210,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -191,7 +247,11 @@ object DummyData {
             "",
             180,
             185,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )
@@ -203,7 +263,11 @@ object DummyData {
             "",
             180,
             140,
+            "movie",
+            5,
             223,
+            340,
+            1,
             "",
             "arhan.ashik"
         )

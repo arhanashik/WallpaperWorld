@@ -20,7 +20,11 @@ data class WallpaperEntity (val id: Int,
                             val url: String?,
                             val width: Int,
                             val height: Int,
-                            val totalWow: Int,
+                            val tag: String?,
+                            val price: Int,
+                            @SerializedName("total_wow") val totalWow: Int,
+                            @SerializedName("total_download") val totalDownload: Int,
+                            val status: Int,
                             @SerializedName("uploader_id") val uploaderId: String?,
                             @SerializedName("uploader_name") val uploaderName: String?): Parcelable {
 
@@ -28,6 +32,10 @@ data class WallpaperEntity (val id: Int,
         parcel.readInt(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readInt(),
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
@@ -41,7 +49,11 @@ data class WallpaperEntity (val id: Int,
         parcel.writeString(url)
         parcel.writeInt(width)
         parcel.writeInt(height)
+        parcel.writeString(tag)
+        parcel.writeInt(price)
         parcel.writeInt(totalWow)
+        parcel.writeInt(totalDownload)
+        parcel.writeInt(status)
         parcel.writeString(uploaderId)
         parcel.writeString(uploaderName)
     }

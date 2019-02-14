@@ -45,7 +45,8 @@ class AccountActivity : AppCompatActivity() {
 
         img_profile.load(user!!.avatar)
         tv_name.text = user!!.name
-        tv_upload_count.text = "Total ${user!!.uploadCount} upload(s)"
+        val uploadCountStr = "Total ${user!!.uploadCount} upload(s)"
+        tv_upload_count.text = uploadCountStr
 
         initView()
         loadWallpapers()
@@ -59,6 +60,10 @@ class AccountActivity : AppCompatActivity() {
         adapter.setListener(object: WallpaperClickEvent {
             override fun onClickWallpaper(wallpaper: WallpaperEntity, position: Int) {
                 openImageViewer(wallpaper)
+            }
+
+            override fun onClickWow(wallpaper: WallpaperEntity, position: Int) {
+
             }
         })
         rv_wallpapers.adapter = adapter

@@ -15,4 +15,5 @@ import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 
 interface WallpaperClickEvent {
     fun onClickWallpaper(wallpaper: WallpaperEntity, position: Int)
+    fun onClickWow(wallpaper: WallpaperEntity, position: Int)
 }
