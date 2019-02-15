@@ -1,5 +1,6 @@
 package com.workfort.apps.util.lib.remote
 
+import com.workfort.apps.wallpaperworld.data.remote.Response
 import com.workfort.apps.wallpaperworld.data.remote.SignUpResponse
 import com.workfort.apps.wallpaperworld.data.remote.WallpaperResponse
 import io.reactivex.Flowable
@@ -28,4 +29,9 @@ interface ApiClient {
     fun search(@Query("id") id: Int,
                @Query("query") query: String,
                @Query("page") page: Int): Flowable<WallpaperResponse>
+
+    @FormUrlEncoded
+    @POST("Api.php?call=favorite")
+    fun addToFavorite(@Field("id") id: Int,
+               @Field("wallpaper_id") wallpaperId: Int): Flowable<Response>
 }

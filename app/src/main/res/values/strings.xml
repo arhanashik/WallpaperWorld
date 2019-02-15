@@ -39,4 +39,9 @@
     <string name="description_wallpaper_set_variation">Wallpaper set variation</string>
     <string name="title_activity_edit_wallpaper">Edit Wallpaper</string>
     <string name="wallpaper_set_success">Wallpaper set successfully!</string>
+    <string name="label_hide">Hide</string>
+    <string name="unknown_exception">Oops! Something went wrong</string>
+    <string name="complete_sign_up_message">Completing sign up for</string>
+    <string name="label_edit">Edit</string>
+    <string name="label_show">Show</string>
 </resources>

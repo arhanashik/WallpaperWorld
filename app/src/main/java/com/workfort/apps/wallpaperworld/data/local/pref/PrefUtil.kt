@@ -3,6 +3,8 @@ package com.workfort.apps.wallpaperworld.data.local.pref
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.workfort.apps.WallpaperWorldApp
+import com.workfort.apps.util.helper.GsonUtil
+import com.workfort.apps.wallpaperworld.data.local.user.UserEntity
 
 object PrefUtil {
     val preferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(
@@ -22,6 +24,7 @@ object PrefUtil {
             is Float -> edit { it.putFloat(key, value) }
             is Boolean -> edit { it.putBoolean(key, value) }
             is Long -> edit { it.putLong(key, value) }
+            is UserEntity -> edit { it.putString(key, GsonUtil().toJson(value)) }
             else -> throw UnsupportedOperationException("Not yet implemented")
         }
     }
@@ -33,6 +36,10 @@ object PrefUtil {
             Boolean::class -> getBoolean(key, defaultValue as? Boolean ?: false) as T?
             Float::class -> getFloat(key, defaultValue as? Float ?: -1f) as T?
             Long::class -> getLong(key, defaultValue as? Long ?: -1) as T?
+            UserEntity::class -> GsonUtil().fromJson(
+                getString(key, defaultValue as? String)!!, UserEntity::class.java
+            ) as T?
+
             else -> throw UnsupportedOperationException("Not yet implemented")
         }
     }

@@ -1,6 +1,5 @@
 package com.workfort.apps.wallpaperworld.ui.main
 
-import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
@@ -10,6 +9,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
@@ -25,6 +25,7 @@ import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.data.local.appconst.Const
 import com.workfort.apps.wallpaperworld.data.local.pref.PrefProp
 import com.workfort.apps.wallpaperworld.data.local.pref.PrefUtil
+import com.workfort.apps.wallpaperworld.data.local.user.UserEntity
 import com.workfort.apps.wallpaperworld.databinding.CustomTabBinding
 import com.workfort.apps.wallpaperworld.databinding.PromptCreateAccountBinding
 import com.workfort.apps.wallpaperworld.ui.account.AccountActivity
@@ -47,6 +48,8 @@ class MainActivity : AppCompatActivity() {
     val apiService by lazy { ApiService.create() }
 
     private var mGoogleSignInClient: GoogleSignInClient? = null
+
+    private var signInDialog: AlertDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,12 +157,12 @@ class MainActivity : AppCompatActivity() {
             try {
                 val account = task.getResult(ApiException::class.java)
 
-                Toaster(this).showToast("Completing sign up for " + account!!.displayName)
+                Toaster(this).showToast(getString(R.string.complete_sign_up_message) + account!!.displayName)
                 signUp(account.displayName!!, account.id!!, account.id!!, account.email!!,
                     account.photoUrl.toString(), Const.AuthType.GOOGLE)
             } catch (e: ApiException) {
                 Timber.w("signInResult:failed code=%s", e.statusCode)
-                Toaster(this).showToast("Hello " + e.statusCode)
+                Toaster(this).showToast(getString(R.string.unknown_exception))
             }
         }
     }
@@ -202,7 +205,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun performAccountAction() {
         if(PrefUtil.get(PrefProp.IS_LOGGED_IN, false)!!) {
-            startActivity(Intent(this, AccountActivity::class.java))
+            val user = PrefUtil.get<UserEntity>(PrefProp.USER, null)
+            AccountActivity.runActivity(this, user!!)
         }else {
             val prompt = DataBindingUtil.inflate<PromptCreateAccountBinding>(layoutInflater,
                 R.layout.prompt_create_account, null, false)
@@ -215,15 +219,15 @@ class MainActivity : AppCompatActivity() {
                 performGoogleSignIn()
             }
 
-            val dialog = AlertDialog.Builder(this).setView(prompt.root).create()
-            dialog.show()
+            signInDialog = AlertDialog.Builder(this).setView(prompt.root).create()
+            signInDialog!!.show()
         }
     }
 
     private fun performGoogleSignIn() {
         val account = GoogleSignIn.getLastSignedInAccount(this)
         if(account != null) {
-            Toaster(this).showToast("Completing sign up for " + account.displayName)
+            Toaster(this).showToast(getString(R.string.complete_sign_up_message) + account.displayName)
             signUp(account.displayName!!, account.id!!, account.id!!, account.email!!, account.photoUrl.toString(),
                 Const.AuthType.GOOGLE)
             return
@@ -248,13 +252,14 @@ class MainActivity : AppCompatActivity() {
                 {
                     Toaster(this).showToast(it.message)
                     if(!it.error) {
-                        val intent = Intent(this, AccountActivity::class.java)
-                        intent.putExtra(Const.Key.USER, it.user)
-                        startActivity(intent)
+                        PrefUtil.set(PrefProp.IS_LOGGED_IN, true)
+                        PrefUtil.set(PrefProp.USER, it.user!!)
+                        AccountActivity.runActivity(this, it.user)
+                        signInDialog!!.dismiss()
                     }
                 }, {
                     Timber.e(it)
-                    Toaster(this).showToast(it.message.toString())
+                    Toaster(this).showToast(getString(R.string.unknown_exception))
                 }
             )
         )

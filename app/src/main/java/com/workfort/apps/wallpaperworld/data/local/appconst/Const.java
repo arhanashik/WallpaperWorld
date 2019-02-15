@@ -41,4 +41,11 @@ public interface Const {
         String FACEBOOK = "facebook";
         String GOOGLE = "google";
     }
+
+    interface WallpaperStatus {
+        int REJECTED = -1;
+        int PENDING = 0;
+        int PUBLISHED = 1;
+        int HIDDEN = 2;
+    }
 }

@@ -58,7 +58,7 @@ class CollectionFragment : Fragment() {
             }
 
             override fun onClickWow(wallpaper: WallpaperEntity, position: Int) {
-                Toaster(context!!).showToast("like " + wallpaper.title)
+                addToFavorite(wallpaper, position)
             }
         })
         rv_wallpapers.adapter = adapter
@@ -115,6 +115,27 @@ class CollectionFragment : Fragment() {
                 }, {
                     Timber.e(it)
                     swipe_refresh.isRefreshing = false
+                    Toaster(context!!).showToast(it.message.toString())
+                }
+            )
+        )
+    }
+
+    fun addToFavorite(wallpaper: WallpaperEntity, position: Int) {
+        val parent = (activity as MainActivity)
+
+        parent.disposable.add(parent.apiService.addToFavorite(1, wallpaper.id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    Toaster(context!!).showToast(it.message)
+                    if(!it.error) {
+                        wallpaper.totalWow++
+                        adapter.notifyItemChanged(position)
+                    }
+                }, {
+                    Timber.e(it)
                     Toaster(context!!).showToast(it.message.toString())
                 }
             )

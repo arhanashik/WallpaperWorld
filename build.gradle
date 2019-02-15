@@ -48,13 +48,12 @@ ext{
     multidex = '2.0.1'
 
     play_service = '16.0.1'
+    gson = '2.8.5'
 
     junit = '4.12'
     runner = '1.1.0-alpha3'
     espresso = '3.1.0-alpha3'
 
-    barcodescanner = '1.9.8'
-    zxing = '3.3.0'
     circularimageview = '3.2.0'
     glide = '4.8.0'
     ucrop = '2.2.2'

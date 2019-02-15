@@ -20,12 +20,13 @@
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:layout_scrollFlags="scroll|snap|enterAlways"
+                    app:layout_scrollFlags="scroll|snap"
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:layout_scrollFlags="scroll|snap"
                     android:padding="@dimen/space_16dp">
 
                 <com.mikhaellopez.circularimageview.CircularImageView

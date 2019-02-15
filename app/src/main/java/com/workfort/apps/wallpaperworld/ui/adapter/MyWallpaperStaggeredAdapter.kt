@@ -1,17 +1,15 @@
 package com.workfort.apps.wallpaperworld.ui.adapter
 
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.workfort.apps.wallpaperworld.R
-import com.workfort.apps.wallpaperworld.data.local.appconst.Const
 import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 import com.workfort.apps.wallpaperworld.databinding.ItemStaggeredWallpaperBinding
-import com.workfort.apps.wallpaperworld.ui.holder.WallpaperStaggeredViewHolder
-import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
+import com.workfort.apps.wallpaperworld.ui.holder.MyWallpaperStaggeredViewHolder
+import com.workfort.apps.wallpaperworld.ui.listener.MyWallpaperClickEvent
 
 /*
 *  ****************************************************************************
@@ -24,9 +22,9 @@ import com.workfort.apps.wallpaperworld.ui.listener.WallpaperClickEvent
 *  ****************************************************************************
 */
 
-class WallpaperStaggeredAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyWallpaperStaggeredAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var listOfWallpapers = ArrayList<WallpaperEntity>()
-    private var listener: WallpaperClickEvent? = null
+    private var listener: MyWallpaperClickEvent? = null
 
     fun setWallpaperList(listOfWallpapers: List<WallpaperEntity>) {
         val callback = WallpaperDiffCallback(this.listOfWallpapers.toList(), listOfWallpapers)
@@ -41,7 +39,7 @@ class WallpaperStaggeredAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()
         return listOfWallpapers
     }
 
-    fun setListener(listener: WallpaperClickEvent) {
+    fun setListener(listener: MyWallpaperClickEvent) {
         this.listener = listener
     }
 
@@ -54,13 +52,13 @@ class WallpaperStaggeredAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()
         val binding = DataBindingUtil.inflate<ItemStaggeredWallpaperBinding>(LayoutInflater.from(parent.context),
             R.layout.item_staggered_wallpaper, parent, false)
 
-        return WallpaperStaggeredViewHolder(binding)
+        return MyWallpaperStaggeredViewHolder(binding)
     }
 
     override fun getItemCount(): Int = listOfWallpapers.size
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        val wallpaperViewHolder = viewHolder as WallpaperStaggeredViewHolder
+        val wallpaperViewHolder = viewHolder as MyWallpaperStaggeredViewHolder
 
         wallpaperViewHolder.bindView(listOfWallpapers[position], listener)
     }

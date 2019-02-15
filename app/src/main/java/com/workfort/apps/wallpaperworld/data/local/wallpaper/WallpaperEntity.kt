@@ -16,15 +16,15 @@ import com.google.gson.annotations.SerializedName
 */
 
 data class WallpaperEntity (val id: Int,
-                            val title: String?,
+                            var title: String?,
                             val url: String?,
                             val width: Int,
                             val height: Int,
                             val tag: String?,
-                            val price: Int,
-                            @SerializedName("total_wow") val totalWow: Int,
-                            @SerializedName("total_download") val totalDownload: Int,
-                            val status: Int,
+                            var price: Int,
+                            @SerializedName("total_wow") var totalWow: Int,
+                            @SerializedName("total_download") var totalDownload: Int,
+                            var status: Int,
                             @SerializedName("uploader_id") val uploaderId: String?,
                             @SerializedName("uploader_name") val uploaderName: String?): Parcelable {
 
