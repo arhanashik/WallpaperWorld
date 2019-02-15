@@ -120,7 +120,7 @@ class AccountActivity : AppCompatActivity() {
                 }, {
                     Timber.e(it)
                     swipe_refresh.isRefreshing = false
-                    Toaster(this).showToast(it.message.toString())
+                    Toaster(this).showToast(getString(R.string.unknown_exception))
                 }
             )
         )
