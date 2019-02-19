@@ -3,6 +3,8 @@ package com.workfort.apps.wallpaperworld.ui.account
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
@@ -15,6 +17,8 @@ import com.workfort.apps.util.helper.load
 import com.workfort.apps.util.lib.remote.ApiService
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.data.local.appconst.Const
+import com.workfort.apps.wallpaperworld.data.local.pref.PrefProp
+import com.workfort.apps.wallpaperworld.data.local.pref.PrefUtil
 import com.workfort.apps.wallpaperworld.data.local.user.UserEntity
 import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 import com.workfort.apps.wallpaperworld.ui.adapter.MyWallpaperStaggeredAdapter
@@ -53,14 +57,31 @@ class AccountActivity : AppCompatActivity() {
 
         user = intent.getParcelableExtra(Const.Key.USER)
         if(user == null) finish()
+        else {
+            img_profile.load(user?.avatar)
+            tv_name.text = user?.name
+            val uploadCountStr = "Total ${user?.uploadCount} upload(s)"
+            tv_upload_count.text = uploadCountStr
 
-        img_profile.load(user!!.avatar)
-        tv_name.text = user!!.name
-        val uploadCountStr = "Total ${user!!.uploadCount} upload(s)"
-        tv_upload_count.text = uploadCountStr
+            initView()
+            loadWallpapers()
+        }
+    }
 
-        initView()
-        loadWallpapers()
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_account, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            R.id.action_log_out -> {
+                PrefUtil.set(PrefProp.IS_LOGGED_IN, false)
+                PrefUtil.set(PrefProp.USER, PrefProp.ACTION_DELETE)
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initView() {

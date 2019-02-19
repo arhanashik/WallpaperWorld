@@ -19,7 +19,10 @@ object PrefUtil {
 
     private operator fun SharedPreferences.set(key: String, value: Any?) {
         when (value) {
-            is String -> edit { it.putString(key, value) }
+            is String -> edit {
+                if(value == PrefProp.ACTION_DELETE) it.remove(key)
+                else it.putString(key, value)
+            }
             is Int -> edit { it.putInt(key, value) }
             is Float -> edit { it.putFloat(key, value) }
             is Boolean -> edit { it.putBoolean(key, value) }

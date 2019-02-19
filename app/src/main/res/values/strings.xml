@@ -44,4 +44,5 @@
     <string name="complete_sign_up_message">Completing sign up for</string>
     <string name="label_edit">Edit</string>
     <string name="label_show">Show</string>
+    <string name="account_log_out">Log out</string>
 </resources>

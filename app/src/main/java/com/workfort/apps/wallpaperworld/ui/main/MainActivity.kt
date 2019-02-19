@@ -19,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.workfort.apps.util.helper.Toaster
 import com.workfort.apps.util.lib.remote.ApiService
 import com.workfort.apps.wallpaperworld.R
@@ -44,6 +45,8 @@ import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
     var disposable: CompositeDisposable = CompositeDisposable()
     val apiService by lazy { ApiService.create() }
 
@@ -55,6 +58,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         val pagerAdapter = PagerAdapter(supportFragmentManager)
         pagerAdapter.addItem(getString(R.string.label_collection), CollectionFragment.newInstance())
@@ -160,6 +165,8 @@ class MainActivity : AppCompatActivity() {
                 Toaster(this).showToast(getString(R.string.complete_sign_up_message) + account!!.displayName)
                 signUp(account.displayName!!, account.id!!, account.id!!, account.email!!,
                     account.photoUrl.toString(), Const.AuthType.GOOGLE)
+
+                addLoginAnalytics(Const.AuthType.GOOGLE, account.email!!)
             } catch (e: ApiException) {
                 Timber.w("signInResult:failed code=%s", e.statusCode)
                 Toaster(this).showToast(getString(R.string.unknown_exception))
@@ -212,7 +219,7 @@ class MainActivity : AppCompatActivity() {
                 R.layout.prompt_create_account, null, false)
 
             prompt.btnFb.setOnClickListener {
-                startActivity(Intent(this, AccountActivity::class.java))
+                performFacebookSignIn()
             }
 
             prompt.btnGoogle.setOnClickListener {
@@ -224,12 +231,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun performFacebookSignIn() {
+        startActivity(Intent(this, AccountActivity::class.java))
+
+        addLoginAnalytics(Const.AuthType.FACEBOOK, "test@gmail.com")
+    }
+
     private fun performGoogleSignIn() {
         val account = GoogleSignIn.getLastSignedInAccount(this)
         if(account != null) {
             Toaster(this).showToast(getString(R.string.complete_sign_up_message) + account.displayName)
             signUp(account.displayName!!, account.id!!, account.id!!, account.email!!, account.photoUrl.toString(),
                 Const.AuthType.GOOGLE)
+
+            addLoginAnalytics(Const.AuthType.GOOGLE, account.email!!)
             return
         }
 
@@ -263,6 +278,13 @@ class MainActivity : AppCompatActivity() {
                 }
             )
         )
+    }
+
+    private fun addLoginAnalytics(method: String, extra: String) {
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.METHOD, method)
+        bundle.putString(FirebaseAnalytics.Param.VALUE, extra)
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
     }
 
     override fun onDestroy() {

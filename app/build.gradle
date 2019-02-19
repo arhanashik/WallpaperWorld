@@ -6,6 +6,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion target_sdk
     defaultConfig {
@@ -66,6 +68,12 @@ dependencies {
 
     // google sign in
     implementation "com.google.android.gms:play-services-auth:$rootProject.play_service"
+
+    // google tag manager
+    implementation "com.google.android.gms:play-services-tagmanager:$rootProject.tagmanager"
+
+    // firebase core + analytics
+    implementation "com.google.firebase:firebase-core:$rootProject.firebase_core"
 
     // gson
     implementation "com.google.code.gson:gson:$rootProject.gson"
