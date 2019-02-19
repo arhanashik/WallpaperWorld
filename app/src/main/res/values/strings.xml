@@ -44,5 +44,9 @@
     <string name="complete_sign_up_message">Completing sign up for</string>
     <string name="label_edit">Edit</string>
     <string name="label_show">Show</string>
-    <string name="account_log_out">Log out</string>
+    <string name="label_log_out">Log out</string>
+    <string name="text_are_you_sure">Are you sure?</string>
+    <string name="log_out_message">You will be logged out from your account. Don\'t worry, you can always comeback.
+    </string>
+    <string name="label_cancel">Cancel</string>
 </resources>

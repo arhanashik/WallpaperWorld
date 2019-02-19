@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProviders
@@ -75,11 +76,7 @@ class AccountActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId) {
-            R.id.action_log_out -> {
-                PrefUtil.set(PrefProp.IS_LOGGED_IN, false)
-                PrefUtil.set(PrefProp.USER, PrefProp.ACTION_DELETE)
-                finish()
-            }
+            R.id.action_log_out -> logout()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -201,5 +198,22 @@ class AccountActivity : AppCompatActivity() {
         intent.putExtra(Const.Key.SELECTED_WALLPAPER, wallpaper)
         intent.putExtra(Const.Key.PAGE, page)
         startActivityForResult(intent, Const.RequestCode.IMAGE_PREVIEW)
+    }
+
+    private fun logout() {
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.text_are_you_sure))
+            .setMessage(getString(R.string.log_out_message))
+            .setPositiveButton(getString(R.string.label_log_out)) {
+                    _, _ ->
+                PrefUtil.set(PrefProp.IS_LOGGED_IN, false)
+                PrefUtil.set(PrefProp.USER, PrefProp.ACTION_DELETE)
+                finish()
+            }
+            .setNegativeButton(getString(R.string.label_cancel)) {
+                    _,_->
+            }
+            .create()
+            .show()
     }
 }
