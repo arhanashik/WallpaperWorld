@@ -25,6 +25,7 @@ import com.workfort.apps.wallpaperworld.data.local.wallpaper.WallpaperEntity
 import com.workfort.apps.wallpaperworld.ui.adapter.MyWallpaperStaggeredAdapter
 import com.workfort.apps.wallpaperworld.ui.imageviewer.ImageViewerActivity
 import com.workfort.apps.wallpaperworld.ui.listener.MyWallpaperClickEvent
+import com.workfort.apps.wallpaperworld.ui.uploadwallpaper.WallpaperUploadDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -59,11 +60,6 @@ class AccountActivity : AppCompatActivity() {
         user = intent.getParcelableExtra(Const.Key.USER)
         if(user == null) finish()
         else {
-            img_profile.load(user?.avatar)
-            tv_name.text = user?.name
-            val uploadCountStr = "Total ${user?.uploadCount} upload(s)"
-            tv_upload_count.text = uploadCountStr
-
             initView()
             loadWallpapers()
         }
@@ -82,6 +78,11 @@ class AccountActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        img_profile.load(user?.avatar)
+        tv_name.text = user?.name
+        val uploadCountStr = "Total ${user?.uploadCount} upload(s)"
+        tv_upload_count.text = uploadCountStr
+
         rv_wallpapers.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         rv_wallpapers.addItemDecoration(StaggeredGridItemDecoration(10, 2))
 
@@ -102,6 +103,17 @@ class AccountActivity : AppCompatActivity() {
 
         swipe_refresh.setOnRefreshListener {
             loadWallpapers()
+        }
+
+        btn_new_wallpaper.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putParcelable(Const.Key.USER, user)
+
+            val uploadDialog = WallpaperUploadDialog()
+            uploadDialog.arguments = bundle
+            uploadDialog.show(
+                supportFragmentManager.beginTransaction(), WallpaperUploadDialog::class.java.name
+            )
         }
     }
 

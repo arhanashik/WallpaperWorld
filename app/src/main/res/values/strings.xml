@@ -49,4 +49,6 @@
     <string name="log_out_message">You will be logged out from your account. Don\'t worry, you can always comeback.
     </string>
     <string name="label_cancel">Cancel</string>
+    <string name="label_new_wallpaper">New Wallpaper</string>
+    <string name="label_upload">Upload</string>
 </resources>
