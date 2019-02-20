@@ -16,6 +16,7 @@ import com.workfort.apps.util.helper.StaggeredGridItemDecoration
 import com.workfort.apps.util.helper.Toaster
 import com.workfort.apps.util.helper.load
 import com.workfort.apps.util.lib.remote.ApiService
+import com.workfort.apps.util.view.JavaDatePickerDialog
 import com.workfort.apps.wallpaperworld.R
 import com.workfort.apps.wallpaperworld.data.local.appconst.Const
 import com.workfort.apps.wallpaperworld.data.local.pref.PrefProp
@@ -31,6 +32,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_account.*
 import timber.log.Timber
+import java.util.*
 
 class AccountActivity : AppCompatActivity() {
 
@@ -106,14 +108,20 @@ class AccountActivity : AppCompatActivity() {
         }
 
         btn_new_wallpaper.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putParcelable(Const.Key.USER, user)
+//            val bundle = Bundle()
+//            bundle.putParcelable(Const.Key.USER, user)
+//
+//            val uploadDialog = WallpaperUploadDialog()
+//            uploadDialog.arguments = bundle
+//            uploadDialog.show(
+//                supportFragmentManager.beginTransaction(), WallpaperUploadDialog::class.java.name
+//            )
 
-            val uploadDialog = WallpaperUploadDialog()
-            uploadDialog.arguments = bundle
-            uploadDialog.show(
-                supportFragmentManager.beginTransaction(), WallpaperUploadDialog::class.java.name
-            )
+            val dialog = JavaDatePickerDialog.newInstance(Calendar.getInstance().time)
+            dialog.onOk = { date ->
+
+            }
+            dialog.show(supportFragmentManager, "editDate")
         }
     }
 

@@ -22,7 +22,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     app:contentInsetStartWithNavigation="0dp"
-                    app:layout_scrollFlags="scroll|snap"
                     app:popupTheme="@style/AppTheme.PopupOverlay" />
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -42,6 +41,9 @@
                         android:layout_width="0dp"
                         android:layout_height="45dp"
                         android:background="@drawable/shape_rect_selector"
+                        android:entries="@array/categories"
+                        android:textAlignment="center"
+                        android:popupBackground="@color/colorPrimary"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -54,6 +56,7 @@
                         android:layout_marginTop="@dimen/space_10"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:hint="@string/hint_title"
+                        android:textColorHint="@android:color/darker_gray"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/sp_tag"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -73,6 +76,7 @@
                         android:layout_marginTop="@dimen/space_10"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:hint="@string/hint_price"
+                        android:textColorHint="@android:color/darker_gray"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/til_title"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -88,8 +92,10 @@
                         android:id="@+id/img_preview"
                         android:layout_width="240dp"
                         android:layout_height="360dp"
+                        android:layout_marginTop="@dimen/space_10"
                         tools:src="@drawable/bg_splash"
                         android:contentDescription="@string/description_image_wallpaper"
+                        android:scaleType="centerCrop"
                         android:visibility="invisible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/til_price"
@@ -100,6 +106,7 @@
                         android:id="@+id/btn_select_image"
                         android:layout_width="240dp"
                         android:layout_height="360dp"
+                        android:layout_marginTop="@dimen/space_10"
                         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
                         android:text="@string/label_choose_photo"
                         android:textAppearance="@style/TextAppearance.AppCompat.Medium"

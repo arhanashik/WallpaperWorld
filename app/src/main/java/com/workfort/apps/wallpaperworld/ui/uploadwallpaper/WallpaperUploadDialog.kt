@@ -35,6 +35,16 @@ class WallpaperUploadDialog: DialogFragment() {
         binding.toolbar.setNavigationOnClickListener { if(dialog != null) dialog.dismiss() }
         binding.toolbar.title = getString(R.string.label_new_wallpaper)
 
+        binding.toolbar.inflateMenu(R.menu.menu_upload_wallpaper)
+        binding.toolbar.setOnMenuItemClickListener {
+            when(it.itemId) {
+                R.id.action_upload -> {
+                    true
+                }
+                else -> false
+            }
+        }
+
         return binding.root
     }
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="categories">
+        <item>-- Select Category --</item>
+        <item>Photography</item>
+        <item>Nature</item>
+        <item>Art</item>
+        <item>Animal</item>
+        <item>Love</item>
+        <item>Life</item>
+        <item>Travel</item>
+        <item>Color</item>
+    </string-array>
+</resources>
