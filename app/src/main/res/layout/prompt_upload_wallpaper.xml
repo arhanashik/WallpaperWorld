@@ -7,6 +7,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
+            android:background="@android:color/white"
             tools:context=".ui.account.AccountActivity">
 
         <com.google.android.material.appbar.AppBarLayout
@@ -33,18 +34,80 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/default_space">
+
+                <Spinner
+                        android:id="@+id/sp_tag"
+                        android:layout_width="0dp"
+                        android:layout_height="45dp"
+                        android:background="@drawable/shape_rect_selector"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/til_title"/>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_10"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="@string/hint_title"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/sp_tag"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toTopOf="@+id/til_price">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/til_price"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_10"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:hint="@string/hint_price"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/til_title"
+                        app:layout_constraintEnd_toEndOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
 
                 <ImageView
-                        android:id="@+id/img_no_data"
-                        android:layout_width="84dp"
-                        android:layout_height="84dp"
-                        app:srcCompat="@drawable/ic_collection_border"
-                        android:contentDescription="@string/description_ic_no_favourite"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:id="@+id/img_preview"
+                        android:layout_width="240dp"
+                        android:layout_height="360dp"
+                        tools:src="@drawable/bg_splash"
+                        android:contentDescription="@string/description_image_wallpaper"
+                        android:visibility="invisible"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintTop_toBottomOf="@+id/til_price"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_select_image"
+                        android:layout_width="240dp"
+                        android:layout_height="360dp"
+                        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                        android:text="@string/label_choose_photo"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        app:backgroundTint="@color/colorPrimary"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/til_price"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
 

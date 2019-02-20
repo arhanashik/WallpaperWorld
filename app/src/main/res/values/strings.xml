@@ -51,4 +51,7 @@
     <string name="label_cancel">Cancel</string>
     <string name="label_new_wallpaper">New Wallpaper</string>
     <string name="label_upload">Upload</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_price">Price</string>
+    <string name="label_choose_photo">Choose Photo</string>
 </resources>
