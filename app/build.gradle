@@ -11,7 +11,7 @@ apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion target_sdk
     defaultConfig {
-        applicationId 'com.workfort.apps.wallpaperworld'
+        applicationId 'com.workfort.wallpaperworld'
         minSdkVersion min_sdk
         targetSdkVersion target_sdk
         versionName version_name

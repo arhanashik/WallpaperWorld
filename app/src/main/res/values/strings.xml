@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">WallpaperWorld</string>
 
+    <string name="file_provider_authority" translatable="false">com.workfort.wallpaperworld.fileprovider</string>
+
     <string name="title_activity_main">Wallpaper World</string>
     <string name="title_fragment_wallpapers">All</string>
     <string name="title_fragment_favourite">Favourite</string>

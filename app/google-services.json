@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:24780179034:android:45a0247e343d87f9",
+        "mobilesdk_app_id": "1:24780179034:android:710805ee81b95f19",
         "android_client_info": {
-          "package_name": "com.workfort.apps.wallpaperworld"
+          "package_name": "com.workfort.wallpaperworld"
         }
       },
       "oauth_client": [
         {
-          "client_id": "24780179034-8lafkfign12lk47elvhlairjr6pp539d.apps.googleusercontent.com",
+          "client_id": "24780179034-la7h834ugi8ill45q6edvhvp97e68tif.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.workfort.apps.wallpaperworld",
+            "package_name": "com.workfort.wallpaperworld",
             "certificate_hash": "91e739dfa919588e526cfb933b07d4de1d2066e9"
           }
         },

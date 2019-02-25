@@ -8,7 +8,7 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             android:background="@android:color/white"
-            tools:context=".ui.account.AccountActivity">
+            tools:context=".app.ui.account.AccountActivity">
 
         <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/appbar"
