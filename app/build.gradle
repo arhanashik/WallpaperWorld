@@ -48,6 +48,7 @@ dependencies {
     // LiveData + ViewModel
     implementation "androidx.lifecycle:lifecycle-extensions:$rootProject.lifecycle"
 
+    // card view and recycler view
     implementation "androidx.cardview:cardview:$rootProject.support"
     implementation "androidx.recyclerview:recyclerview:$rootProject.support"
 
