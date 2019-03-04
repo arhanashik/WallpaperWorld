@@ -39,7 +39,7 @@ class WallpaperWorldApp  : MultiDexApplication() {
             if (BuildConfig.DEBUG) {
                 initiateOnlyInDebugMode()
             }
-            initiate(applicationContext)
+//            initiate(applicationContext)
         }
     }
 
@@ -52,9 +52,9 @@ class WallpaperWorldApp  : MultiDexApplication() {
         })
     }
 
-    private fun initiate(context: Context) {
-        //Prefs.init(context)
-    }
+//    private fun initiate(context: Context) {
+//        Prefs.init(context)
+//    }
 
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)

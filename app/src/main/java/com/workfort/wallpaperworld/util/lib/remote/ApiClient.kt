@@ -36,12 +36,11 @@ interface ApiClient {
     fun addToFavorite(@Field("id") id: Int,
                @Field("wallpaper_id") wallpaperId: Int): Flowable<Response>
 
-    @FormUrlEncoded
     @Multipart
     @POST("Api.php?call=upload")
-    fun createWallpaper(@Field("title") title: String,
-                        @Field("tag") tag: String,
-                        @Field("price") price: Int,
-                        @Field("uploader_id") uploaderId: String,
+    fun createWallpaper(@Part("title") title: String,
+                        @Part("tag") tag: String,
+                        @Part("price") price: Int,
+                        @Part("uploader_id") uploaderId: String,
                         @Part wallpaper: MultipartBody.Part): Flowable<Response>
 }

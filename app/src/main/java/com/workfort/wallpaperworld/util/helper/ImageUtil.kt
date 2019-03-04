@@ -113,8 +113,6 @@ class ImageUtil {
         val cursor = context.contentResolver.query(uri, projection, null, null, null)
             ?: return null
         cursor.moveToFirst()
-        //val s = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA))
-        //cursor.close()
         cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)).also {
             cursor.close()
             return it

@@ -16,18 +16,18 @@ import com.workfort.wallpaperworld.app.data.local.appconst.Const
 *  ****************************************************************************
 */
 
-data class WallpaperEntity (val id: Int = 0,
+data class WallpaperEntity (var id: Int = 0,
                             var title: String? = "",
-                            val url: String? = "",
-                            val width: Int = 0,
-                            val height: Int = 0,
-                            val tag: String? = "",
+                            var url: String? = "",
+                            var width: Int = 0,
+                            var height: Int = 0,
+                            var tag: String? = "",
                             var price: Int = 0,
                             @SerializedName("total_wow") var totalWow: Int = 0,
                             @SerializedName("total_download") var totalDownload: Int = 0,
                             var status: Int = Const.WallpaperStatus.UNDEFINED,
-                            @SerializedName("uploader_id") val uploaderId: String? = "",
-                            @SerializedName("uploader_name") val uploaderName: String? = ""): Parcelable {
+                            @SerializedName("uploader_id") var uploaderId: String? = "",
+                            @SerializedName("uploader_name") var uploaderName: String? = ""): Parcelable {
 
     constructor(parcel: Parcel) : this(
         parcel.readInt(),

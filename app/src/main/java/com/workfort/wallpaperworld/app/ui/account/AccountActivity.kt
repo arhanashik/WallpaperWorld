@@ -236,4 +236,9 @@ class AccountActivity : AppCompatActivity() {
             .create()
             .show()
     }
+
+    override fun onDestroy() {
+        disposable.dispose()
+        super.onDestroy()
+    }
 }

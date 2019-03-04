@@ -18,14 +18,22 @@ import com.workfort.wallpaperworld.app.data.local.user.UserEntity
 import com.workfort.wallpaperworld.app.data.local.wallpaper.WallpaperEntity
 import com.workfort.wallpaperworld.databinding.PromptUploadWallpaperBinding
 import com.workfort.wallpaperworld.util.helper.*
+import com.workfort.wallpaperworld.util.lib.remote.ApiService
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import timber.log.Timber
 import java.io.File
 
 class WallpaperUploadDialog: DialogFragment() {
 
     private lateinit var mBinding: PromptUploadWallpaperBinding
+
+    private var disposable: CompositeDisposable = CompositeDisposable()
+    private val apiService by lazy { ApiService.create() }
 
     private var user: UserEntity? = null
     private var wallpaper: WallpaperEntity? = WallpaperEntity()
@@ -38,6 +46,8 @@ class WallpaperUploadDialog: DialogFragment() {
 
         if(arguments != null) {
             user = arguments?.getParcelable(Const.Key.USER)
+            wallpaper?.uploaderId = user?.id.toString()
+            wallpaper?.uploaderName = user?.name
         }
     }
 
@@ -119,6 +129,7 @@ class WallpaperUploadDialog: DialogFragment() {
         if(mBinding.spTag.selectedItemPosition == 0) {
             Toaster(context!!).showToast(R.string.category_required_exception); return
         }
+        wallpaper?.tag = mBinding.spTag.selectedItem.toString()
 
         if(!validate(mBinding.tilTitle, mBinding.etTitle, R.string.title_required_exception)) return
         wallpaper?.title = mBinding.etTitle.text.toString()
@@ -141,6 +152,22 @@ class WallpaperUploadDialog: DialogFragment() {
         val wallpaperRequestBody = RequestBody.create(wallpaperMediaType, File(wallpaperPath))
         val wallpaperMultipartBody = MultipartBody.Part.createFormData("file",
             wallpaperPath, wallpaperRequestBody)
+
+        disposable.add(apiService.createWallpaper(wallpaper?.title!!, wallpaper?.tag!!, wallpaper?.price!!,
+            wallpaper?.uploaderId!!,
+            wallpaperMultipartBody).subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    Toaster(context!!).showToast(it.message)
+                    if(!it.error) {
+
+                    }
+                }, {
+                    Timber.e(it)
+                    Toaster(context!!).showToast(it.message.toString())
+                }
+            ))
     }
 
     private fun validate(layout: TextInputLayout, editText: TextInputEditText, error: Int): Boolean {
@@ -151,5 +178,10 @@ class WallpaperUploadDialog: DialogFragment() {
 
         layout.error = null
         return true
+    }
+
+    override fun onDestroy() {
+        disposable.dispose()
+        super.onDestroy()
     }
 }
