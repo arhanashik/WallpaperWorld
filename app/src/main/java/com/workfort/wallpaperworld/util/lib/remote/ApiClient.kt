@@ -4,6 +4,7 @@ import com.workfort.wallpaperworld.app.data.remote.Response
 import com.workfort.wallpaperworld.app.data.remote.SignUpResponse
 import com.workfort.wallpaperworld.app.data.remote.WallpaperResponse
 import io.reactivex.Flowable
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface ApiClient {
@@ -34,4 +35,13 @@ interface ApiClient {
     @POST("Api.php?call=favorite")
     fun addToFavorite(@Field("id") id: Int,
                @Field("wallpaper_id") wallpaperId: Int): Flowable<Response>
+
+    @FormUrlEncoded
+    @Multipart
+    @POST("Api.php?call=upload")
+    fun createWallpaper(@Field("title") title: String,
+                        @Field("tag") tag: String,
+                        @Field("price") price: Int,
+                        @Field("uploader_id") uploaderId: String,
+                        @Part wallpaper: MultipartBody.Part): Flowable<Response>
 }

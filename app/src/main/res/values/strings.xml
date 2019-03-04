@@ -56,4 +56,9 @@
     <string name="hint_title">Title</string>
     <string name="hint_price">Price</string>
     <string name="label_choose_photo">Choose Photo</string>
+    <string name="category_required_exception">Please select a category first!</string>
+    <string name="title_required_exception">Please select a great title!</string>
+    <string name="price_required_exception">Please add a valid price!</string>
+    <string name="wallpaper_required_exception">Please select your wallpaper first!</string>
+    <string name="invalid_wallpaper_exception">Please select a valid wallpaper</string>
 </resources>

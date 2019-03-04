@@ -4,25 +4,33 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.workfort.wallpaperworld.R
 import com.workfort.wallpaperworld.app.data.local.appconst.Const
 import com.workfort.wallpaperworld.app.data.local.user.UserEntity
+import com.workfort.wallpaperworld.app.data.local.wallpaper.WallpaperEntity
 import com.workfort.wallpaperworld.databinding.PromptUploadWallpaperBinding
-import com.workfort.wallpaperworld.util.helper.ImagePicker
-import com.workfort.wallpaperworld.util.helper.PermissionUtil
-import com.workfort.wallpaperworld.util.helper.Toaster
-import com.workfort.wallpaperworld.util.helper.load
+import com.workfort.wallpaperworld.util.helper.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
 class WallpaperUploadDialog: DialogFragment() {
 
     private lateinit var mBinding: PromptUploadWallpaperBinding
 
     private var user: UserEntity? = null
+    private var wallpaper: WallpaperEntity? = WallpaperEntity()
+
+    private var wallpaperInfo: ImageInfo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +56,7 @@ class WallpaperUploadDialog: DialogFragment() {
         mBinding.toolbar.setOnMenuItemClickListener {
             when(it.itemId) {
                 R.id.action_upload -> {
+                    uploadWallpaper()
                     true
                 }
                 else -> false
@@ -75,12 +84,12 @@ class WallpaperUploadDialog: DialogFragment() {
         when (requestCode) {
             ImagePicker.REQUEST_CODE_PICK_IMAGE -> {
                 if (resultCode == Activity.RESULT_OK) {
-                    val pickedImageInfo = ImagePicker.getPickedImageInfo(context, resultCode, data)
+                    wallpaperInfo = ImagePicker.getPickedImageInfo(context, resultCode, data)
 
-                    if (pickedImageInfo.imageUri != null) {
+                    if (wallpaperInfo?.imageUri != null) {
                         mBinding.btnSelectImage.visibility = View.INVISIBLE
                         mBinding.imgPreview.visibility = View.VISIBLE
-                        mBinding.imgPreview.load(pickedImageInfo.imageUri)
+                        mBinding.imgPreview.load(wallpaperInfo?.imageUri)
                     }
                 } else {
                     if (resultCode != Activity.RESULT_CANCELED) {
@@ -104,5 +113,43 @@ class WallpaperUploadDialog: DialogFragment() {
 
             ImagePicker.pickImage(this)
         }
+    }
+
+    private fun uploadWallpaper() {
+        if(mBinding.spTag.selectedItemPosition == 0) {
+            Toaster(context!!).showToast(R.string.category_required_exception); return
+        }
+
+        if(!validate(mBinding.tilTitle, mBinding.etTitle, R.string.title_required_exception)) return
+        wallpaper?.title = mBinding.etTitle.text.toString()
+
+        if(!validate(mBinding.tilPrice, mBinding.etPrice, R.string.price_required_exception)) return
+        wallpaper?.price = mBinding.etPrice.text.toString().toInt()
+
+        if(wallpaperInfo?.imageUri == null) {
+            Toaster(context!!).showToast(R.string.wallpaper_required_exception); return
+        }
+
+        val wallpaperPath = ImageUtil().getPath(context!!, wallpaperInfo?.imageUri!!)
+        val wallpaperMediaTypeStr = context?.contentResolver?.getType(wallpaperInfo?.imageUri!!)
+
+        if(wallpaperMediaTypeStr == null) {
+            Toaster(context!!).showToast(R.string.invalid_wallpaper_exception); return
+        }
+
+        val wallpaperMediaType = MediaType.parse(wallpaperMediaTypeStr)
+        val wallpaperRequestBody = RequestBody.create(wallpaperMediaType, File(wallpaperPath))
+        val wallpaperMultipartBody = MultipartBody.Part.createFormData("file",
+            wallpaperPath, wallpaperRequestBody)
+    }
+
+    private fun validate(layout: TextInputLayout, editText: TextInputEditText, error: Int): Boolean {
+        if(editText.text == null || TextUtils.isEmpty(editText.text.toString())) {
+            layout.error = getString(error)
+            return false
+        }
+
+        layout.error = null
+        return true
     }
 }

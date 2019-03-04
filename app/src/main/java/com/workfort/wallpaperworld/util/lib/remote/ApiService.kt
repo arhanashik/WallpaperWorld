@@ -11,7 +11,7 @@ class ApiService {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 //.baseUrl("http://agramonia.com/ww/")
-                .baseUrl("http://192.168.2.28/ww/")
+                .baseUrl("http://192.168.2.53/ww/")
                 .build()
 
             return retrofit.create(ApiClient::class.java)

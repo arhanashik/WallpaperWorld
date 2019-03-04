@@ -3,6 +3,7 @@ package com.workfort.wallpaperworld.app.data.local.wallpaper
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.workfort.wallpaperworld.app.data.local.appconst.Const
 
 /*
 *  ****************************************************************************
@@ -15,18 +16,18 @@ import com.google.gson.annotations.SerializedName
 *  ****************************************************************************
 */
 
-data class WallpaperEntity (val id: Int,
-                            var title: String?,
-                            val url: String?,
-                            val width: Int,
-                            val height: Int,
-                            val tag: String?,
-                            var price: Int,
-                            @SerializedName("total_wow") var totalWow: Int,
-                            @SerializedName("total_download") var totalDownload: Int,
-                            var status: Int,
-                            @SerializedName("uploader_id") val uploaderId: String?,
-                            @SerializedName("uploader_name") val uploaderName: String?): Parcelable {
+data class WallpaperEntity (val id: Int = 0,
+                            var title: String? = "",
+                            val url: String? = "",
+                            val width: Int = 0,
+                            val height: Int = 0,
+                            val tag: String? = "",
+                            var price: Int = 0,
+                            @SerializedName("total_wow") var totalWow: Int = 0,
+                            @SerializedName("total_download") var totalDownload: Int = 0,
+                            var status: Int = Const.WallpaperStatus.UNDEFINED,
+                            @SerializedName("uploader_id") val uploaderId: String? = "",
+                            @SerializedName("uploader_name") val uploaderName: String? = ""): Parcelable {
 
     constructor(parcel: Parcel) : this(
         parcel.readInt(),

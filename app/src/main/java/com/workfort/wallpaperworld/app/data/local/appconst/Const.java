@@ -43,6 +43,7 @@ public interface Const {
     }
 
     interface WallpaperStatus {
+        int UNDEFINED = -2;
         int REJECTED = -1;
         int PENDING = 0;
         int PUBLISHED = 1;

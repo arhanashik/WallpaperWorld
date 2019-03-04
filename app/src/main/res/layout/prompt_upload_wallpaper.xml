@@ -63,6 +63,7 @@
                         app:layout_constraintBottom_toTopOf="@+id/til_price">
 
                     <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
@@ -82,6 +83,7 @@
                         app:layout_constraintEnd_toEndOf="parent">
 
                     <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_price"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="numberDecimal"/>
