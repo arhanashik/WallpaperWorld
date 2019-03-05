@@ -37,8 +37,8 @@ class WallpaperUploadDialog: DialogFragment() {
 
     private var user: UserEntity? = null
     private var wallpaper: WallpaperEntity? = WallpaperEntity()
-
     private var wallpaperInfo: ImageInfo? = null
+    private var listener: WallpaperUploadEvent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +49,10 @@ class WallpaperUploadDialog: DialogFragment() {
             wallpaper?.uploaderId = user?.id!!
             wallpaper?.uploaderName = user?.name
         }
+    }
+
+    public fun setListener(listener: WallpaperUploadEvent) {
+        this.listener = listener
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -166,7 +170,8 @@ class WallpaperUploadDialog: DialogFragment() {
                 {
                     Toaster(context!!).showToast(it.message)
                     if(!it.error) {
-
+                        wallpaper = it.wallpaper
+                        listener?.onNewUpload(wallpaper!!)
                     }
                 }, {
                     Timber.e(it)
@@ -188,5 +193,9 @@ class WallpaperUploadDialog: DialogFragment() {
     override fun onDestroy() {
         disposable.dispose()
         super.onDestroy()
+    }
+
+    interface WallpaperUploadEvent{
+        fun onNewUpload(wallpaper: WallpaperEntity)
     }
 }

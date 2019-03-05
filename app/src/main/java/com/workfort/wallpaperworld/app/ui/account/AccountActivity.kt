@@ -113,6 +113,11 @@ class AccountActivity : AppCompatActivity() {
 
             val uploadDialog = WallpaperUploadDialog()
             uploadDialog.arguments = bundle
+            uploadDialog.setListener(object: WallpaperUploadDialog.WallpaperUploadEvent {
+                override fun onNewUpload(wallpaper: WallpaperEntity) {
+                    adapter.addWallpaper(wallpaper)
+                }
+            })
             uploadDialog.show(
                 supportFragmentManager.beginTransaction(), WallpaperUploadDialog::class.java.name
             )

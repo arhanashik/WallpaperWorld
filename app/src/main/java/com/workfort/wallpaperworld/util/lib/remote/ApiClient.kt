@@ -2,6 +2,7 @@ package com.workfort.wallpaperworld.util.lib.remote
 
 import com.workfort.wallpaperworld.app.data.remote.Response
 import com.workfort.wallpaperworld.app.data.remote.SignUpResponse
+import com.workfort.wallpaperworld.app.data.remote.WallpaperListResponse
 import com.workfort.wallpaperworld.app.data.remote.WallpaperResponse
 import io.reactivex.Flowable
 import okhttp3.MultipartBody
@@ -20,17 +21,17 @@ interface ApiClient {
 
     @GET("Api.php?call=wallpapers")
     fun getWallpapers(@Query("type") type: String,
-                      @Query("page") page: Int) : Flowable<WallpaperResponse>
+                      @Query("page") page: Int) : Flowable<WallpaperListResponse>
 
     @GET("Api.php?call=wallpapers")
     fun getFavorites(@Query("id") id: Int,
                      @Query("type") type: String,
-                     @Query("page") page: Int): Flowable<WallpaperResponse>
+                     @Query("page") page: Int): Flowable<WallpaperListResponse>
 
     @GET("Api.php?call=search")
     fun search(@Query("id") id: Int,
                @Query("query") query: String,
-               @Query("page") page: Int): Flowable<WallpaperResponse>
+               @Query("page") page: Int): Flowable<WallpaperListResponse>
 
     @FormUrlEncoded
     @POST("Api.php?call=favorite")
@@ -43,5 +44,5 @@ interface ApiClient {
                         @Part("tag") tag: RequestBody,
                         @Part("price") price: RequestBody,
                         @Part("uploader_id") uploaderId: RequestBody,
-                        @Part wallpaper: MultipartBody.Part): Flowable<Response>
+                        @Part wallpaper: MultipartBody.Part): Flowable<WallpaperResponse>
 }
