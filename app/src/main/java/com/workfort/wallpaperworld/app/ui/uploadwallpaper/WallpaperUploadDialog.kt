@@ -46,7 +46,7 @@ class WallpaperUploadDialog: DialogFragment() {
 
         if(arguments != null) {
             user = arguments?.getParcelable(Const.Key.USER)
-            wallpaper?.uploaderId = user?.id.toString()
+            wallpaper?.uploaderId = user?.id!!
             wallpaper?.uploaderName = user?.name
         }
     }
@@ -153,9 +153,14 @@ class WallpaperUploadDialog: DialogFragment() {
         val wallpaperMultipartBody = MultipartBody.Part.createFormData("file",
             wallpaperPath, wallpaperRequestBody)
 
-        disposable.add(apiService.createWallpaper(wallpaper?.title!!, wallpaper?.tag!!, wallpaper?.price!!,
-            wallpaper?.uploaderId!!,
-            wallpaperMultipartBody).subscribeOn(Schedulers.io())
+        val txtMediaType = MediaType.parse("text/plain")
+        disposable.add(apiService.createWallpaper(
+            RequestBody.create(txtMediaType, wallpaper?.title!!),
+            RequestBody.create(txtMediaType, wallpaper?.tag!!),
+            RequestBody.create(txtMediaType, wallpaper?.price.toString()),
+            RequestBody.create(txtMediaType, wallpaper?.uploaderId.toString()),
+            wallpaperMultipartBody)
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {

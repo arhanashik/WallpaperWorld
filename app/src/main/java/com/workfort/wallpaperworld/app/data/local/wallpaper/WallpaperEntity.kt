@@ -16,7 +16,7 @@ import com.workfort.wallpaperworld.app.data.local.appconst.Const
 *  ****************************************************************************
 */
 
-data class WallpaperEntity (var id: Int = 0,
+data class WallpaperEntity (var id: Int = -1,
                             var title: String? = "",
                             var url: String? = "",
                             var width: Int = 0,
@@ -26,7 +26,7 @@ data class WallpaperEntity (var id: Int = 0,
                             @SerializedName("total_wow") var totalWow: Int = 0,
                             @SerializedName("total_download") var totalDownload: Int = 0,
                             var status: Int = Const.WallpaperStatus.UNDEFINED,
-                            @SerializedName("uploader_id") var uploaderId: String? = "",
+                            @SerializedName("uploader_id") var uploaderId: Int = -1,
                             @SerializedName("uploader_name") var uploaderName: String? = ""): Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -40,7 +40,7 @@ data class WallpaperEntity (var id: Int = 0,
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readString(),
+        parcel.readInt(),
         parcel.readString()
     )
 
@@ -55,7 +55,7 @@ data class WallpaperEntity (var id: Int = 0,
         parcel.writeInt(totalWow)
         parcel.writeInt(totalDownload)
         parcel.writeInt(status)
-        parcel.writeString(uploaderId)
+        parcel.writeInt(uploaderId)
         parcel.writeString(uploaderName)
     }
 

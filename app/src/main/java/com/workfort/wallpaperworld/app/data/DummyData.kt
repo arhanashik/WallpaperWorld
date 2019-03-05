@@ -28,7 +28,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -44,7 +44,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -60,7 +60,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -76,7 +76,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -92,7 +92,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -108,7 +108,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -124,7 +124,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -140,7 +140,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -156,7 +156,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -172,7 +172,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -188,7 +188,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -204,7 +204,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -220,7 +220,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -236,7 +236,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -252,7 +252,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
@@ -268,7 +268,7 @@ object DummyData {
             223,
             340,
             1,
-            "",
+            1,
             "arhan.ashik"
         )
         listOfWallpapers.add(movieModel)
