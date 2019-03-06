@@ -3,6 +3,10 @@
 
     <string name="file_provider_authority" translatable="false">com.workfort.wallpaperworld.fileprovider</string>
 
+    <!-- facebook login credentials (email: debkennedy55@hotmail.com) -->
+    <string name="facebook_app_id" translatable="false">293127658033915</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb293127658033915</string>
+
     <string name="title_activity_main">Wallpaper World</string>
     <string name="title_fragment_wallpapers">All</string>
     <string name="title_fragment_favourite">Favourite</string>
@@ -61,4 +65,5 @@
     <string name="price_required_exception">Please add a valid price!</string>
     <string name="wallpaper_required_exception">Please select your wallpaper first!</string>
     <string name="invalid_wallpaper_exception">Please select a valid wallpaper</string>
+    <string name="user_canceled_fb_login_exception">Oops, Login canceled!</string>
 </resources>

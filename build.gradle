@@ -8,7 +8,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.3.1'
+        classpath 'com.android.tools.build:gradle:3.3.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.2.0'
 
@@ -52,6 +52,8 @@ ext{
     tagmanager = '16.0.7'
     firebase_core = '16.0.7'
     gson = '2.8.5'
+
+    facebook_login = '4.40.0'
 
     junit = '4.12'
     runner = '1.1.0-alpha3'

@@ -11,12 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.workfort.wallpaperworld.util.helper.AndroidUtil
-import com.workfort.wallpaperworld.util.helper.StaggeredGridItemDecoration
-import com.workfort.wallpaperworld.util.helper.Toaster
-import com.workfort.wallpaperworld.util.helper.load
-import com.workfort.wallpaperworld.util.lib.remote.ApiService
-import com.workfort.wallpaperworld.util.view.JavaDatePickerDialog
+import com.facebook.login.LoginManager
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.workfort.wallpaperworld.R
 import com.workfort.wallpaperworld.app.data.local.appconst.Const
 import com.workfort.wallpaperworld.app.data.local.pref.PrefProp
@@ -27,12 +24,16 @@ import com.workfort.wallpaperworld.app.ui.adapter.MyWallpaperStaggeredAdapter
 import com.workfort.wallpaperworld.app.ui.imageviewer.ImageViewerActivity
 import com.workfort.wallpaperworld.app.ui.listener.MyWallpaperClickEvent
 import com.workfort.wallpaperworld.app.ui.uploadwallpaper.WallpaperUploadDialog
+import com.workfort.wallpaperworld.util.helper.AndroidUtil
+import com.workfort.wallpaperworld.util.helper.StaggeredGridItemDecoration
+import com.workfort.wallpaperworld.util.helper.Toaster
+import com.workfort.wallpaperworld.util.helper.load
+import com.workfort.wallpaperworld.util.lib.remote.ApiService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_account.*
 import timber.log.Timber
-import java.util.*
 
 class AccountActivity : AppCompatActivity() {
 
@@ -231,8 +232,20 @@ class AccountActivity : AppCompatActivity() {
             .setMessage(getString(R.string.log_out_message))
             .setPositiveButton(getString(R.string.label_log_out)) {
                     _, _ ->
+                when(PrefUtil.get(PrefProp.AUTH_TYPE, "")) {
+                    Const.AuthType.GOOGLE -> {
+                        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                            .requestEmail()
+                            .build()
+                        GoogleSignIn.getClient(this, gso).signOut()
+                    }
+                    Const.AuthType.FACEBOOK -> {
+                        LoginManager.getInstance().logOut()
+                    }
+                }
                 PrefUtil.set(PrefProp.IS_LOGGED_IN, false)
                 PrefUtil.set(PrefProp.USER, PrefProp.ACTION_DELETE)
+                PrefUtil.set(PrefProp.AUTH_TYPE, PrefProp.ACTION_DELETE)
                 finish()
             }
             .setNegativeButton(getString(R.string.label_cancel)) {

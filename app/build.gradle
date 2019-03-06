@@ -79,12 +79,17 @@ dependencies {
     implementation "com.google.code.gson:gson:$rootProject.gson"
 }
 
-//module
+// facebook
+dependencies {
+    implementation "com.facebook.android:facebook-login:$rootProject.facebook_login"
+}
+
+// module
 dependencies {
     implementation project(':cardstackview')
 }
 
-//3rd party
+// 3rd party
 dependencies {
     // circle image
     implementation "com.mikhaellopez:circularimageview:$rootProject.circularimageview"
@@ -110,7 +115,7 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$rootProject.timber"
 }
 
-//testing libs
+// testing libs
 dependencies {
     testImplementation "junit:junit:$rootProject.junit"
     androidTestImplementation "androidx.test:runner:$rootProject.runner"

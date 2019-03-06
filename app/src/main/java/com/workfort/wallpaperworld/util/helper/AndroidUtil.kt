@@ -2,6 +2,12 @@ package com.workfort.wallpaperworld.util.helper
 
 import android.content.Context
 import androidx.appcompat.widget.PopupMenu
+import android.content.pm.PackageManager
+import android.util.Base64
+import com.workfort.wallpaperworld.WallpaperWorldApp
+import timber.log.Timber
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 
 class AndroidUtil {
@@ -31,5 +37,23 @@ class AndroidUtil {
             e.printStackTrace()
         }
 
+    }
+
+    fun getKeyHash() {
+        try {
+            val info = WallpaperWorldApp.getApplicationContext().packageManager
+                .getPackageInfo(WallpaperWorldApp.getApplicationContext().packageName, PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                Timber.e("KeyHash:%s", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+            //something
+            Timber.e("KeyHash:%s", e.message)
+        } catch (ex: NoSuchAlgorithmException) {
+            //something
+            Timber.e("KeyHash:%s", ex.message)
+        }
     }
 }
