@@ -117,6 +117,7 @@ class AccountActivity : AppCompatActivity() {
             uploadDialog.setListener(object: WallpaperUploadDialog.WallpaperUploadEvent {
                 override fun onNewUpload(wallpaper: WallpaperEntity) {
                     adapter.addWallpaper(wallpaper)
+                    rv_wallpapers.smoothScrollToPosition(adapter.itemCount)
                 }
             })
             uploadDialog.show(

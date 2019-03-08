@@ -17,7 +17,6 @@ import com.yalantis.ucrop.model.AspectRatio
 import timber.log.Timber
 import java.io.IOException
 import java.util.*
-import android.provider.MediaStore
 
 class ImageUtil {
 
@@ -106,16 +105,5 @@ class ImageUtil {
         }
 
         return bitmap
-    }
-
-    fun getPath(context: Context, uri: Uri): String? {
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor = context.contentResolver.query(uri, projection, null, null, null)
-            ?: return null
-        cursor.moveToFirst()
-        cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)).also {
-            cursor.close()
-            return it
-        }
     }
 }

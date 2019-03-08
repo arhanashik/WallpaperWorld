@@ -5,8 +5,10 @@ import com.workfort.wallpaperworld.app.data.remote.SignUpResponse
 import com.workfort.wallpaperworld.app.data.remote.WallpaperListResponse
 import com.workfort.wallpaperworld.app.data.remote.WallpaperResponse
 import io.reactivex.Flowable
+import io.reactivex.Single
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface ApiClient {
@@ -44,5 +46,5 @@ interface ApiClient {
                         @Part("tag") tag: RequestBody,
                         @Part("price") price: RequestBody,
                         @Part("uploader_id") uploaderId: RequestBody,
-                        @Part wallpaper: MultipartBody.Part): Flowable<WallpaperResponse>
+                        @Part wallpaper: MultipartBody.Part): Single<WallpaperResponse>
 }

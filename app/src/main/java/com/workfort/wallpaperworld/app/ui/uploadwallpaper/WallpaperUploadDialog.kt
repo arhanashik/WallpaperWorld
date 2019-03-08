@@ -19,14 +19,13 @@ import com.workfort.wallpaperworld.app.data.local.wallpaper.WallpaperEntity
 import com.workfort.wallpaperworld.databinding.PromptUploadWallpaperBinding
 import com.workfort.wallpaperworld.util.helper.*
 import com.workfort.wallpaperworld.util.lib.remote.ApiService
+import com.workfort.wallpaperworld.util.lib.remote.RemoteUtil
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import timber.log.Timber
-import java.io.File
 
 class WallpaperUploadDialog: DialogFragment() {
 
@@ -34,6 +33,9 @@ class WallpaperUploadDialog: DialogFragment() {
 
     private var disposable: CompositeDisposable = CompositeDisposable()
     private val apiService by lazy { ApiService.create() }
+
+    private val fileUtil = FileUtil()
+    private val remoteUtil = RemoteUtil()
 
     private var user: UserEntity? = null
     private var wallpaper: WallpaperEntity? = WallpaperEntity()
@@ -51,14 +53,14 @@ class WallpaperUploadDialog: DialogFragment() {
         }
     }
 
-    public fun setListener(listener: WallpaperUploadEvent) {
+    fun setListener(listener: WallpaperUploadEvent) {
         this.listener = listener
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        mBinding = DataBindingUtil.inflate<PromptUploadWallpaperBinding>(
+        mBinding = DataBindingUtil.inflate(
             inflater, R.layout.prompt_upload_wallpaper, container, false
         )
 
@@ -111,7 +113,6 @@ class WallpaperUploadDialog: DialogFragment() {
                     }
                 }
             }
-
             else -> {
 
             }
@@ -145,39 +146,49 @@ class WallpaperUploadDialog: DialogFragment() {
             Toaster(context!!).showToast(R.string.wallpaper_required_exception); return
         }
 
-        val wallpaperPath = ImageUtil().getPath(context!!, wallpaperInfo?.imageUri!!)
-        val wallpaperMediaTypeStr = context?.contentResolver?.getType(wallpaperInfo?.imageUri!!)
+        val wallpaperPath = fileUtil.getPath(wallpaperInfo?.imageUri!!)
+        val wallpaperMediaTypeStr = fileUtil.getFileType(wallpaperInfo?.imageUri!!)
 
-        if(wallpaperMediaTypeStr == null) {
+        if(TextUtils.isEmpty(wallpaperPath) || TextUtils.isEmpty(wallpaperMediaTypeStr)) {
             Toaster(context!!).showToast(R.string.invalid_wallpaper_exception); return
         }
 
-        val wallpaperMediaType = MediaType.parse(wallpaperMediaTypeStr)
-        val wallpaperRequestBody = RequestBody.create(wallpaperMediaType, File(wallpaperPath))
-        val wallpaperMultipartBody = MultipartBody.Part.createFormData("file",
-            wallpaperPath, wallpaperRequestBody)
-
-        val txtMediaType = MediaType.parse("text/plain")
-        disposable.add(apiService.createWallpaper(
-            RequestBody.create(txtMediaType, wallpaper?.title!!),
-            RequestBody.create(txtMediaType, wallpaper?.tag!!),
-            RequestBody.create(txtMediaType, wallpaper?.price.toString()),
-            RequestBody.create(txtMediaType, wallpaper?.uploaderId.toString()),
-            wallpaperMultipartBody)
+        disposable.add(getUploadFlowable(wallpaperPath!!, wallpaperMediaTypeStr!!)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    Toaster(context!!).showToast(it.message)
-                    if(!it.error) {
-                        wallpaper = it.wallpaper
-                        listener?.onNewUpload(wallpaper!!)
-                    }
+                    Toaster(context!!).showToast("Progress: $it")
+                    if(it == 1.0) Toaster(context!!).showToast(R.string.wallpaper_creation_success_message)
                 }, {
                     Timber.e(it)
                     Toaster(context!!).showToast(it.message.toString())
                 }
-            ))
+            )
+        )
+    }
+
+    private fun getUploadFlowable(path: String, mediaType: String): Flowable<Double> {
+        return Flowable.create<Double>({ emitter ->
+            try {
+                val response = apiService.createWallpaper(
+                    remoteUtil.createRequestBody("text/plain", wallpaper?.title!!),
+                    remoteUtil.createRequestBody("text/plain", wallpaper?.tag!!),
+                    remoteUtil.createRequestBody("text/plain", wallpaper?.price.toString()),
+                    remoteUtil.createRequestBody("text/plain", wallpaper?.uploaderId.toString()),
+                    remoteUtil.createCountingMultipartBody(path, mediaType, emitter)).blockingGet()
+                Timber.e("error: %s, message: %s", response.error, response.message)
+
+                if(response.error) emitter.onError(Throwable(response.message))
+                else {
+                    wallpaper = response.wallpaper
+                    onUiThread { listener?.onNewUpload(wallpaper!!); this.dismiss() }
+                    emitter.onComplete()
+                }
+            } catch (e: Exception) {
+                emitter.tryOnError(e)
+            }
+        }, BackpressureStrategy.LATEST)
     }
 
     private fun validate(layout: TextInputLayout, editText: TextInputEditText, error: Int): Boolean {
