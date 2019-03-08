@@ -83,7 +83,7 @@ class AccountActivity : AppCompatActivity() {
     private fun initView() {
         img_profile.load(user?.avatar)
         tv_name.text = user?.name
-        val uploadCountStr = "Total ${user?.uploadCount} upload(s)"
+        var uploadCountStr = "Total ${user?.uploadCount} upload(s)"
         tv_upload_count.text = uploadCountStr
 
         rv_wallpapers.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
@@ -116,8 +116,11 @@ class AccountActivity : AppCompatActivity() {
             uploadDialog.arguments = bundle
             uploadDialog.setListener(object: WallpaperUploadDialog.WallpaperUploadEvent {
                 override fun onNewUpload(wallpaper: WallpaperEntity) {
-                    adapter.addWallpaper(wallpaper)
-                    rv_wallpapers.smoothScrollToPosition(adapter.itemCount)
+                    adapter.addWallpaper(0, wallpaper)
+                    user?.uploadCount = user?.uploadCount!!.plus(1)
+                    uploadCountStr = "Total ${user?.uploadCount} upload(s)"
+                    tv_upload_count.text = uploadCountStr
+                    PrefUtil.set(PrefProp.USER, user!!)
                 }
             })
             uploadDialog.show(

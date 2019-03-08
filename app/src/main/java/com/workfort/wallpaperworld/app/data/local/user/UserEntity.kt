@@ -9,7 +9,7 @@ data class UserEntity(val id: Int,
                       val username: String?,
                       val email: String?,
                       @SerializedName("upload_count")
-                      val uploadCount: Int?,
+                      var uploadCount: Int,
                       val avatar: String?,
                       @SerializedName("auth_type")
                       val authType: String?): Parcelable {
@@ -19,7 +19,7 @@ data class UserEntity(val id: Int,
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readInt(),
         parcel.readString(),
         parcel.readString()
     )
@@ -29,7 +29,7 @@ data class UserEntity(val id: Int,
         parcel.writeString(name)
         parcel.writeString(username)
         parcel.writeString(email)
-        parcel.writeValue(uploadCount)
+        parcel.writeInt(uploadCount)
         parcel.writeString(avatar)
         parcel.writeString(authType)
     }

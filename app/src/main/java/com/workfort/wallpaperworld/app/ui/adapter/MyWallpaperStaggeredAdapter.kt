@@ -44,6 +44,11 @@ class MyWallpaperStaggeredAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyItemChanged(itemCount)
     }
 
+    fun addWallpaper(position: Int, wallpaper: WallpaperEntity) {
+        listOfWallpapers.add(position, wallpaper)
+        notifyItemChanged(position)
+    }
+
     fun setListener(listener: MyWallpaperClickEvent) {
         this.listener = listener
     }
