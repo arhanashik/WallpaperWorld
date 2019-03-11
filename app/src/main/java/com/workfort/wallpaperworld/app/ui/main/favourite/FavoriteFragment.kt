@@ -57,7 +57,7 @@ class FavoriteFragment : Fragment() {
             }
 
             override fun onClickWow(wallpaper: WallpaperEntity, position: Int) {
-
+                (activity as? MainActivity)?.removeFromFavorite(wallpaper, position, adapter)
             }
         })
         rv_wallpapers.adapter = adapter
@@ -69,15 +69,16 @@ class FavoriteFragment : Fragment() {
 
     private var page = 0
     private fun loadWallpapers() {
+        val parent = (activity as MainActivity)
+        if(parent.currentUser == null) return
+
         swipe_refresh.isRefreshing = true
         if(page == 0) {
             img_no_data.visibility = View.VISIBLE
             rv_wallpapers.visibility = View.INVISIBLE
         }
 
-        val parent = (activity as MainActivity)
-
-        parent.disposable.add(parent.apiService.getFavorites(1,
+        parent.disposable.add(parent.apiService.getFavorites(parent.currentUser?.id!!,
             Const.WallpaperType.FAVORITE, page)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

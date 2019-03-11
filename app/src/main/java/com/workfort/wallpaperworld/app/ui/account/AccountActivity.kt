@@ -202,18 +202,25 @@ class AccountActivity : AppCompatActivity() {
         popupMenu.show()
     }
 
+    private var likeInProgress: Boolean = false
     fun addToFavorite(wallpaper: WallpaperEntity, position: Int) {
-        disposable.add(apiService.addToFavorite(user!!.id, wallpaper.id)
+
+        if(likeInProgress) return
+
+        likeInProgress = true
+        disposable.add(apiService.addToFavorite(user?.id!!, wallpaper.id)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
+                    likeInProgress = false
                     Toaster(this).showToast(it.message)
                     if(!it.error) {
                         wallpaper.totalWow++
                         adapter.notifyItemChanged(position)
                     }
                 }, {
+                    likeInProgress = false
                     Timber.e(it)
                     Toaster(this).showToast(it.message.toString())
                 }

@@ -57,7 +57,7 @@ class TopChartFragment : Fragment() {
             }
 
             override fun onClickWow(wallpaper: WallpaperEntity, position: Int) {
-
+                (activity as? MainActivity)?.addToFavorite(wallpaper, position, adapter)
             }
         })
         rv_wallpapers.adapter = adapter

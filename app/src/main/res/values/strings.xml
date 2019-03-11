@@ -67,4 +67,6 @@
     <string name="invalid_wallpaper_exception">Please select a valid wallpaper</string>
     <string name="user_canceled_fb_login_exception">Oops, Login canceled!</string>
     <string name="wallpaper_creation_success_message">Wallpaper created successfully</string>
+    <string name="remove_favorite_warning_message">This item will be removed from your favorite list</string>
+    <string name="label_remove">Remove</string>
 </resources>

@@ -9,8 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.workfort.wallpaperworld.util.helper.StaggeredGridItemDecoration
-import com.workfort.wallpaperworld.util.helper.Toaster
 import com.workfort.wallpaperworld.R
 import com.workfort.wallpaperworld.app.data.local.appconst.Const
 import com.workfort.wallpaperworld.app.data.local.wallpaper.WallpaperEntity
@@ -18,6 +16,8 @@ import com.workfort.wallpaperworld.app.ui.adapter.WallpaperStaggeredAdapter
 import com.workfort.wallpaperworld.app.ui.imageviewer.ImageViewerActivity
 import com.workfort.wallpaperworld.app.ui.listener.WallpaperClickEvent
 import com.workfort.wallpaperworld.app.ui.main.MainActivity
+import com.workfort.wallpaperworld.util.helper.StaggeredGridItemDecoration
+import com.workfort.wallpaperworld.util.helper.Toaster
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_collection.*
@@ -58,7 +58,7 @@ class CollectionFragment : Fragment() {
             }
 
             override fun onClickWow(wallpaper: WallpaperEntity, position: Int) {
-                addToFavorite(wallpaper, position)
+                (activity as? MainActivity)?.addToFavorite(wallpaper, position, adapter)
             }
         })
         rv_wallpapers.adapter = adapter
@@ -115,27 +115,6 @@ class CollectionFragment : Fragment() {
                 }, {
                     Timber.e(it)
                     swipe_refresh.isRefreshing = false
-                    Toaster(context!!).showToast(it.message.toString())
-                }
-            )
-        )
-    }
-
-    fun addToFavorite(wallpaper: WallpaperEntity, position: Int) {
-        val parent = (activity as MainActivity)
-
-        parent.disposable.add(parent.apiService.addToFavorite(1, wallpaper.id)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    Toaster(context!!).showToast(it.message)
-                    if(!it.error) {
-                        wallpaper.totalWow++
-                        adapter.notifyItemChanged(position)
-                    }
-                }, {
-                    Timber.e(it)
                     Toaster(context!!).showToast(it.message.toString())
                 }
             )

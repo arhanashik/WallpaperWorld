@@ -47,4 +47,9 @@ interface ApiClient {
                         @Part("price") price: RequestBody,
                         @Part("uploader_id") uploaderId: RequestBody,
                         @Part wallpaper: MultipartBody.Part): Single<WallpaperResponse>
+
+    @FormUrlEncoded
+    @POST("Api.php?call=remove_favorite")
+    fun removeFromFavorite(@Field("id") id: Int,
+                      @Field("wallpaper_id") wallpaperId: Int): Flowable<Response>
 }

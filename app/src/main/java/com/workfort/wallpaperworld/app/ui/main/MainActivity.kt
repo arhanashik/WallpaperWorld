@@ -29,8 +29,10 @@ import com.workfort.wallpaperworld.app.data.local.appconst.Const
 import com.workfort.wallpaperworld.app.data.local.pref.PrefProp
 import com.workfort.wallpaperworld.app.data.local.pref.PrefUtil
 import com.workfort.wallpaperworld.app.data.local.user.UserEntity
+import com.workfort.wallpaperworld.app.data.local.wallpaper.WallpaperEntity
 import com.workfort.wallpaperworld.app.ui.account.AccountActivity
 import com.workfort.wallpaperworld.app.ui.adapter.PagerAdapter
+import com.workfort.wallpaperworld.app.ui.adapter.WallpaperStaggeredAdapter
 import com.workfort.wallpaperworld.app.ui.main.collection.CollectionFragment
 import com.workfort.wallpaperworld.app.ui.main.favourite.FavoriteFragment
 import com.workfort.wallpaperworld.app.ui.main.popular.PopularFragment
@@ -38,7 +40,6 @@ import com.workfort.wallpaperworld.app.ui.main.premium.PremiumFragment
 import com.workfort.wallpaperworld.app.ui.main.topchart.TopChartFragment
 import com.workfort.wallpaperworld.databinding.CustomTabBinding
 import com.workfort.wallpaperworld.databinding.PromptCreateAccountBinding
-import com.workfort.wallpaperworld.util.helper.AndroidUtil
 import com.workfort.wallpaperworld.util.helper.Toaster
 import com.workfort.wallpaperworld.util.lib.remote.ApiService
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -66,12 +67,20 @@ class MainActivity : AppCompatActivity() {
 
     private var signInDialog: AlertDialog? = null
 
+    private var redirectToAccount: Boolean = false
+
+    var currentUser: UserEntity? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
         firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
+        if(PrefUtil.get(PrefProp.IS_LOGGED_IN, false)!!) {
+            currentUser = PrefUtil.get<UserEntity>(PrefProp.USER, null)
+        }
 
         val pagerAdapter = PagerAdapter(supportFragmentManager)
         pagerAdapter.addItem(getString(R.string.label_collection), CollectionFragment.newInstance())
@@ -85,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         tab_layout.setupWithViewPager(view_pager)
 
         setupTabs()
-        AndroidUtil().getKeyHash()
+        // AndroidUtil().getKeyHash()
     }
 
     private fun setupTabs() {
@@ -156,7 +165,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if(item!!.itemId == R.id.action_account) {
-            performAccountAction()
+            performAccountAction(true)
 
             return true
         }
@@ -224,13 +233,12 @@ class MainActivity : AppCompatActivity() {
         tv.setCompoundDrawablesWithIntrinsicBounds(0, icon, 0, 0)
     }
 
-    private fun performAccountAction() {
+    private fun performAccountAction(redirectToAccount: Boolean) {
+        this.redirectToAccount = redirectToAccount
 
-        if(PrefUtil.get(PrefProp.IS_LOGGED_IN, false)!!) {
-            val user = PrefUtil.get<UserEntity>(PrefProp.USER, null)
-            AccountActivity.runActivity(this, user!!)
+        if(PrefUtil.get(PrefProp.IS_LOGGED_IN, false)!! && currentUser != null) {
+            AccountActivity.runActivity(this, currentUser!!)
         }else {
-
             val prompt = DataBindingUtil.inflate<PromptCreateAccountBinding>(layoutInflater,
                 R.layout.prompt_create_account, null, false)
 
@@ -334,11 +342,16 @@ class MainActivity : AppCompatActivity() {
                 {
                     Toaster(this).showToast(it.message)
                     if(!it.error) {
+                        currentUser = it.user
                         PrefUtil.set(PrefProp.IS_LOGGED_IN, true)
-                        PrefUtil.set(PrefProp.USER, it.user!!)
+                        PrefUtil.set(PrefProp.USER, currentUser!!)
                         PrefUtil.set(PrefProp.AUTH_TYPE, authType)
-                        AccountActivity.runActivity(this, it.user)
                         signInDialog!!.dismiss()
+
+                        if(redirectToAccount) {
+                            redirectToAccount = false
+                            AccountActivity.runActivity(this, currentUser!!)
+                        }
                     }
                 }, {
                     Timber.e(it)
@@ -353,6 +366,70 @@ class MainActivity : AppCompatActivity() {
         bundle.putString(FirebaseAnalytics.Param.METHOD, method)
         bundle.putString(FirebaseAnalytics.Param.VALUE, extra)
         firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN, bundle)
+    }
+
+    private var likeInProgress: Boolean = false
+    fun addToFavorite(wallpaper: WallpaperEntity, position: Int, adapter: WallpaperStaggeredAdapter) {
+
+        if(likeInProgress) return
+
+        if(!PrefUtil.get(PrefProp.IS_LOGGED_IN, false)!! || currentUser == null) {
+            performAccountAction(false)
+            return
+        }
+
+        likeInProgress = true
+        disposable.add(apiService.addToFavorite(currentUser?.id!!, wallpaper.id)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    likeInProgress = false
+                    Toaster(this).showToast(it.message)
+                    if(!it.error) {
+                        wallpaper.totalWow++
+                        adapter.notifyItemChanged(position)
+                    }
+                }, {
+                    likeInProgress = false
+                    Timber.e(it)
+                    Toaster(this).showToast(it.message.toString())
+                }
+            )
+        )
+    }
+
+    fun removeFromFavorite(wallpaper: WallpaperEntity, position: Int, adapter: WallpaperStaggeredAdapter) {
+        if(!PrefUtil.get(PrefProp.IS_LOGGED_IN, false)!! || currentUser == null) {
+            performAccountAction(false)
+            return
+        }
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.text_are_you_sure)
+            .setMessage(R.string.remove_favorite_warning_message)
+            .setPositiveButton(R.string.label_remove) { _,_->
+                disposable.add(apiService.removeFromFavorite(currentUser?.id!!, wallpaper.id)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                        {
+                            Toaster(this).showToast(it.message)
+                            if(!it.error) {
+                                wallpaper.totalWow--
+                                adapter.getWallpaperList().remove(wallpaper)
+                                adapter.notifyItemRemoved(position)
+                            }
+                        }, {
+                            Timber.e(it)
+                            Toaster(this).showToast(it.message.toString())
+                        }
+                    )
+                )
+            }
+            .setNegativeButton(R.string.label_cancel){_,_->}
+            .create()
+            .show()
     }
 
     override fun onDestroy() {
