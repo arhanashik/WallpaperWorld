@@ -87,6 +87,7 @@ dependencies {
 // module
 dependencies {
     implementation project(':cardstackview')
+    implementation project(':likebutton')
 }
 
 // 3rd party

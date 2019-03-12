@@ -72,6 +72,24 @@
                     app:layout_constraintEnd_toStartOf="@+id/tv_wow_count"
                     app:layout_constraintBottom_toBottomOf="@+id/img_wallpaper"/>
 
+            <!--<com.like.LikeButton-->
+                    <!--android:id="@+id/btn_like"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--app:icon_type="Thumb"-->
+                    <!--app:circle_start_color="@color/colorPrimary"-->
+                    <!--app:like_drawable="@drawable/ic_wow"-->
+                    <!--app:unlike_drawable="@drawable/ic_wow"-->
+                    <!--app:dots_primary_color="@android:color/white"-->
+                    <!--app:dots_secondary_color="@android:color/white"-->
+                    <!--app:circle_end_color="@android:color/white"-->
+                    <!--app:icon_size="25dp"-->
+                    <!--app:liked="false"-->
+                    <!--app:anim_scale_factor="2"-->
+                    <!--app:is_enabled="true"-->
+                    <!--app:layout_constraintEnd_toStartOf="@+id/tv_wow_count"-->
+                    <!--app:layout_constraintBottom_toBottomOf="@+id/img_wallpaper"/>-->
+
             <TextView
                     android:id="@+id/tv_wow_count"
                     android:layout_width="wrap_content"
