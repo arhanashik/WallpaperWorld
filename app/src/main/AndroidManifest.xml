@@ -3,9 +3,7 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="com.workfort.wallpaperworld">
 
-    <uses-feature
-            android:name="android.hardware.camera"
-            android:required="false" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.SET_WALLPAPER"/>
@@ -102,7 +100,7 @@
 
         <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".ui.searchresult.SearchResultActivity"/>
+                android:value=".app.ui.searchresult.SearchResultActivity"/>
     </application>
 
 </manifest>
